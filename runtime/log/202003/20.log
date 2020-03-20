@@ -1,0 +1,30 @@
+---------------------------------------------------------------
+[ 2020-03-20T14:34:23+08:00 ] 127.0.0.1 GET hanse.cn/install/install/index.html
+[运行时间：0.019925s] [吞吐率：50.19req/s] [内存消耗：1,784.02kb] [文件加载：43]
+[ info ] [ LANG ] /Users/zhanghan/www/hansecms/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'install',
+    1 => 'install',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'hanse.cn',
+  'connection' => 'keep-alive',
+  'cache-control' => 'max-age=0',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+)
+[ info ] [ PARAM ] array (
+  '/install/install/index_html' => '',
+)
+[ info ] [ RUN ] app\install\controller\Install->index[ /Users/zhanghan/www/hansecms/application/install/controller/Install.php ]
+[ info ] [ VIEW ] /Users/zhanghan/www/hansecms/application/install/view/install/index.html [ array (
+) ]
+[ info ] [ LOG ] INIT File
