@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:64:"D:\phpstudy_pro\WWW\hs.cn/application/admini\view\nav\index.html";i:1571639030;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\head.html";i:1575261362;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\menu.html";i:1577288697;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:67:"/Users/zhanghan/www/hansecms/application/admini/view/nav/index.html";i:1571639030;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/head.html";i:1575261364;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/menu.html";i:1584714334;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,14 +14,12 @@
 </head>
 <body>
 <div class="top_menu">
-    <div class="left">
-        <a href="<?php echo url('index/index'); ?>">管理控制台</a>
-    </div>
+
     <div class="left">
         <?php if(is_array($menu) || $menu instanceof \think\Collection || $menu instanceof \think\Paginator): $i = 0; $__LIST__ = $menu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$me): $mod = ($i % 2 );++$i;?>
-        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><i class="layui-icon <?php echo $me['ico']; ?>"></i><?php echo $me['title']; ?></a>
+        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><div><i class="layui-icon <?php echo $me['ico']; ?>"></i></div><?php echo $me['title']; ?></a>
         <?php endforeach; endif; else: echo "" ;endif; ?>
-        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><i class="layui-icon layui-icon-fonts-html"></i>文档助手</a>
+        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><div><i class="layui-icon layui-icon-fonts-html"></i></div>文档助手</a>
     </div>
     <div class="right">
         <a href="/" target="_blank" title="首页"><i class="layui-icon layui-icon-release"></i></a>
@@ -62,6 +60,10 @@
     }
     .layui-colorpicker-trigger-span{
         border: 1px solid #fff;
+    }
+    .admin_main>.content_box>.admin_left_nav>.nav.navcur{
+        background-color: <?php echo config("site.color"); ?>;
+        color:#fff;
     }
 </style>
 <script>
@@ -142,6 +144,9 @@
 <!--左边栏目-->
 <div class="left_menu">
     <div class="menu">
+
+        <a href="<?php echo url('index/index'); ?>" style="text-align: center">管理控制台</a>
+
         <div class="touxiang">
             <a href="<?php echo url('index/editadmin'); ?>">
                 <div style="background: #fff"><img src="<?php echo \think\Session::get('admini.pic'); ?>" alt=""></div>

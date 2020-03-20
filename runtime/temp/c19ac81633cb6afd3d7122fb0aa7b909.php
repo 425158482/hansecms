@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:66:"D:\phpstudy_pro\WWW\hs.cn/application/admini\view\index\index.html";i:1570327030;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\head.html";i:1575261362;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\menu.html";i:1577288697;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:67:"/Users/zhanghan/www/hansecms/application/admini/view/api/index.html";i:1577248578;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/head.html";i:1575261364;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/menu.html";i:1584714334;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,19 +11,15 @@
 <script src="/static/admin/js/jquery-1.10.2.min.js"></script>
 
 
-    <script src="https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js"></script>
 </head>
 <body>
-<!--头部栏目-->
 <div class="top_menu">
-    <div class="left">
-        <a href="<?php echo url('index/index'); ?>">管理控制台</a>
-    </div>
+
     <div class="left">
         <?php if(is_array($menu) || $menu instanceof \think\Collection || $menu instanceof \think\Paginator): $i = 0; $__LIST__ = $menu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$me): $mod = ($i % 2 );++$i;?>
-        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><i class="layui-icon <?php echo $me['ico']; ?>"></i><?php echo $me['title']; ?></a>
+        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><div><i class="layui-icon <?php echo $me['ico']; ?>"></i></div><?php echo $me['title']; ?></a>
         <?php endforeach; endif; else: echo "" ;endif; ?>
-        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><i class="layui-icon layui-icon-fonts-html"></i>文档助手</a>
+        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><div><i class="layui-icon layui-icon-fonts-html"></i></div>文档助手</a>
     </div>
     <div class="right">
         <a href="/" target="_blank" title="首页"><i class="layui-icon layui-icon-release"></i></a>
@@ -64,6 +60,10 @@
     }
     .layui-colorpicker-trigger-span{
         border: 1px solid #fff;
+    }
+    .admin_main>.content_box>.admin_left_nav>.nav.navcur{
+        background-color: <?php echo config("site.color"); ?>;
+        color:#fff;
     }
 </style>
 <script>
@@ -144,6 +144,9 @@
 <!--左边栏目-->
 <div class="left_menu">
     <div class="menu">
+
+        <a href="<?php echo url('index/index'); ?>" style="text-align: center">管理控制台</a>
+
         <div class="touxiang">
             <a href="<?php echo url('index/editadmin'); ?>">
                 <div style="background: #fff"><img src="<?php echo \think\Session::get('admini.pic'); ?>" alt=""></div>
@@ -161,72 +164,94 @@
     </div>
 </div>
 <!--中间内容-->
+
 <div class="admin_main">
     <div class="container">
-        <blockquote class="layui-elem-quote">
-            欢迎 : <a href="<?php echo url('index/editadmin'); ?>"><?php echo \think\Session::get('admini.name'); ?></a> IP : <?php echo \think\Session::get('admini.ip'); ?> 时间 : <?php echo date("Y-m-d H:i:s",\think\Session::get('admini.create_time')); ?>
-        </blockquote>
-        <div class="layui-row">
-            <?php if(is_array($inav) || $inav instanceof \think\Collection || $inav instanceof \think\Paginator): $i = 0; $__LIST__ = $inav;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$inav): $mod = ($i % 2 );++$i;?>
-            <div class="layui-col-xs3" style="text-align: center">
-                <div class="layui-col-xs10 ad_in_na">
-                    <?php if($inav['model']==4): ?>
-                    <a href="<?php echo url('nav/edit',['id'=>$inav['id']]); ?>"><?php echo $inav['name']; ?></a>
-                    <?php else: ?>
-                    <a href="<?php echo url('content/content',['id'=>$inav['id']]); ?>"><?php echo $inav['name']; ?></a>
-                    <?php endif; ?>
+        <blockquote class="layui-elem-quote">API管理</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>百度统计</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <label class="layui-form-label">统计地址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="tj_url" lay-verify="" value="<?php echo config('site.tj_url'); ?>" autocomplete="off" placeholder="" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">百度统计地址</div>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>链接推送</legend>
+            </fieldset>
+            <blockquote class="layui-elem-quote">
+                注 : 推送规则<br>
+                手动推送 : 请在->链接推送处点击全部推送<br>
+                主动推送 : 添加内容时自动推送, 隐藏的栏目内容不会进行推送(需要开启自动推送)<br>
+                <span style="color: red">以上推送都必须为准入密匙正确才会推送</span>
+            </blockquote>
+            <div class="layui-form-item">
+                <label class="layui-form-label">自动推送</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" <?php if(($zdts)): ?>checked=""<?php endif; ?> name="zdts" value="1" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                </div>
+                <div class="layui-form-mid layui-word-aux">发布内容时自动推送 <span style="color: red">注 : 准入密匙正确时生效</span></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">准入密钥</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="baidu_ts" lay-verify="" value="<?php echo config('site.baidu_ts'); ?>" autocomplete="off" placeholder="" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">百度搜索资源平台准入密匙</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-input-inline"></label>
+                <div class="layui-input-block">
+                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
                 </div>
             </div>
-            <?php endforeach; endif; else: echo "" ;endif; ?>
-        </div>
-        <blockquote class="layui-elem-quote" style="margin-top: 20px">
-            访问统计
-        </blockquote>
-        <div id="mains" style="height:400px;"></div>
+        </form>
     </div>
-
-
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('mains'));
-
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '统计走势图'
-        },
-        tooltip: {},
-        xAxis: {
-            data: [<?php echo $time; ?>]
-        },
-        yAxis: {},
-        series: [{
-            name: '访问人数',
-            type: 'bar',
-            data: [<?php echo $num; ?>]
-        }]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        //自定义验证规则
+        form.on('submit(menu)', function(data){
+            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+            jquery.ajax({
+                type:"post",
+                url :"<?php echo url('api/upfiles'); ?>",
+                data:data,
+                success:function (msg) {
+                    if(msg==1){
+                        layer.msg('更新成功!', {icon: 1});
+                    }else{
+                        layer.msg('系统繁忙!', {icon: 5});
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    })
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

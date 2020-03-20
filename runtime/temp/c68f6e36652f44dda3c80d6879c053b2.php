@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:68:"D:\phpstudy_pro\WWW\hs.cn/application/admini\view\content\index.html";i:1570327082;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\head.html";i:1575261362;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\menu.html";i:1577288697;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:69:"/Users/zhanghan/www/hansecms/application/admini/view/links/index.html";i:1569856826;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/head.html";i:1575261364;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/menu.html";i:1584714334;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,16 +13,13 @@
 
 </head>
 <body>
-<!--头部栏目-->
 <div class="top_menu">
-    <div class="left">
-        <a href="<?php echo url('index/index'); ?>">管理控制台</a>
-    </div>
+
     <div class="left">
         <?php if(is_array($menu) || $menu instanceof \think\Collection || $menu instanceof \think\Paginator): $i = 0; $__LIST__ = $menu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$me): $mod = ($i % 2 );++$i;?>
-        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><i class="layui-icon <?php echo $me['ico']; ?>"></i><?php echo $me['title']; ?></a>
+        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><div><i class="layui-icon <?php echo $me['ico']; ?>"></i></div><?php echo $me['title']; ?></a>
         <?php endforeach; endif; else: echo "" ;endif; ?>
-        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><i class="layui-icon layui-icon-fonts-html"></i>文档助手</a>
+        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><div><i class="layui-icon layui-icon-fonts-html"></i></div>文档助手</a>
     </div>
     <div class="right">
         <a href="/" target="_blank" title="首页"><i class="layui-icon layui-icon-release"></i></a>
@@ -63,6 +60,10 @@
     }
     .layui-colorpicker-trigger-span{
         border: 1px solid #fff;
+    }
+    .admin_main>.content_box>.admin_left_nav>.nav.navcur{
+        background-color: <?php echo config("site.color"); ?>;
+        color:#fff;
     }
 </style>
 <script>
@@ -143,6 +144,9 @@
 <!--左边栏目-->
 <div class="left_menu">
     <div class="menu">
+
+        <a href="<?php echo url('index/index'); ?>" style="text-align: center">管理控制台</a>
+
         <div class="touxiang">
             <a href="<?php echo url('index/editadmin'); ?>">
                 <div style="background: #fff"><img src="<?php echo \think\Session::get('admini.pic'); ?>" alt=""></div>
@@ -160,31 +164,119 @@
     </div>
 </div>
 <!--中间内容-->
+
 <div class="admin_main">
-    <div class="content_box">
-        <div class="admin_left_nav">
-            <?php if(is_array($indexnav) || $indexnav instanceof \think\Collection || $indexnav instanceof \think\Paginator): $i = 0; $__LIST__ = $indexnav;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$indexnav): $mod = ($i % 2 );++$i;if(($indexnav['model']==4)): ?>
-            <a href="<?php echo url('nav/edit',['id'=>$indexnav['id']]); ?>" class="nav" style="color: red"><?php echo $indexnav['name']; ?></a>
-            <?php else: ?>
-            <a href="<?php echo url('content/content',['id'=>$indexnav['id']]); ?>" class="nav"><?php echo $indexnav['name']; ?></a>
-            <?php endif; endforeach; endif; else: echo "" ;endif; ?>
+    <div class="container">
+        <blockquote class="layui-elem-quote">友情链接</blockquote>
+        <div class="btn_tj">
+            <a href="<?php echo url('links/add'); ?>" class="layui-btn layui-btn-sm"><i class="layui-icon"></i>添加链接</a>
         </div>
-        <div class="admin_content">
-            <?php if(is_array($inav) || $inav instanceof \think\Collection || $inav instanceof \think\Paginator): $i = 0; $__LIST__ = $inav;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$inav): $mod = ($i % 2 );++$i;?>
-            <div class="layui-col-xs3" style="text-align: center">
-                <div class="layui-col-xs10 ad_in_na">
-                    <?php if($inav['model']==4): ?>
-                    <a href="<?php echo url('nav/edit',['id'=>$inav['id']]); ?>"><?php echo $inav['name']; ?></a>
-                    <?php else: ?>
-                    <a href="<?php echo url('content/content',['id'=>$inav['id']]); ?>"><?php echo $inav['name']; ?></a>
-                    <?php endif; ?>
-                </div>
-            </div>
-            <?php endforeach; endif; else: echo "" ;endif; ?>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="200">
+                    <col>
+                    <col width="200">
+                    <col width="100">
+                    <col width="130">
+
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>友链名称</th>
+                    <th>友链地址</th>
+                    <th>类型</th>
+                    <th>排序(desc)</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(is_array($links) || $links instanceof \think\Collection || $links instanceof \think\Paginator): $i = 0; $__LIST__ = $links;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$links): $mod = ($i % 2 );++$i;?>
+                <tr>
+                    <td><?php echo $links['id']; ?></td>
+                    <td><?php echo $links['title']; ?></td>
+                    <td><?php echo $links['url']; ?></td>
+                    <td>
+                        <?php if(($links['type']==1)): ?>
+                        文字类型
+                        <?php elseif(($links['type']==2)): ?>
+                        图片类型
+                        <?php endif; ?>
+                    </td>
+                    <td><input type="text" class="sort" data-id="<?php echo $links['id']; ?>" value="<?php echo $links['sort']; ?>"></td>
+                    <td>
+                        <a href="<?php echo url('links/edit',['id'=>$links['id']]); ?>" type="button" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="<?php echo $links['id']; ?>"><i class="layui-icon"></i></button>
+                    </td>
+                </tr>
+                <?php endforeach; endif; else: echo "" ;endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        $(document).on('blur','.sort', function () {
+            var id = $(this).attr('data-id');
+            var obs = $(this);
+            $.ajax({
+                type: "POST",
+                url: '<?php echo url("links/editsort"); ?>',
+                data:{'id':id,'sort':obs.val()},
+                success: function(msg){
+                    if(msg){
+                        layer.msg('排序已更改', {icon: 1});
+                    }else{
+                        layer.msg('排序更改失败', {icon: 5});
+                    }
+                }
+            });
+        });
+        $(document).on('click','.delete', function () {
+            var id = $(this).attr('data-id');
+            layer.confirm('确定要删除吗？', {
+                btn: ['必须的','忍一手'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo url("links/delete"); ?>',
+                    data:{'id':id},
+                    success: function(msg){
+                        if(msg==1){
+                            layer.msg('删除成功', {icon: 1,time:1000}, function() {
+                                location.href="<?php echo url('links/index'); ?>";
+                            });
+                            location.href;
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }else{
+                            layer.msg('系统繁忙', {icon: 5});
+                        }
+                    }
+                });
+            });
+        })
+        $(".bannerpic").click(function () {
+            var img = $(this).data("pic");
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: '516px',
+                skin: '', //没有背景色
+                shadeClose: true,
+                content: "<img src='"+ img +"' style='width: 516px;'>"
+            });
+        })
+    })
+</script>
 
 
 

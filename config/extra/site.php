@@ -21,7 +21,7 @@ return [
 	'tj_url'=>'https://baidu.com',
 	'login_bg'=>'/uploads/20200212/1b821f77685219dca8083dd824288e4b.jpg',
 	'slide'=>'1',
-	'color'=>'rgba(57, 61, 73, 1)',
+	'color'=>'rgba(0, 150, 136, 1)',
 	'witty'=>'1',
 	'witty_con'=>'最佳|更佳
 最具|更具

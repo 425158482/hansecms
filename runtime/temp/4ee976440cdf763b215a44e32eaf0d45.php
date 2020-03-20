@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:65:"D:\phpstudy_pro\WWW\hs.cn/application/admini\view\menu\index.html";i:1569161400;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\head.html";i:1575261362;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\menu.html";i:1577288697;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:70:"/Users/zhanghan/www/hansecms/application/admini/view/models/index.html";i:1569507850;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/head.html";i:1575261364;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/menu.html";i:1584714334;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,14 +14,12 @@
 </head>
 <body>
 <div class="top_menu">
-    <div class="left">
-        <a href="<?php echo url('index/index'); ?>">管理控制台</a>
-    </div>
+
     <div class="left">
         <?php if(is_array($menu) || $menu instanceof \think\Collection || $menu instanceof \think\Paginator): $i = 0; $__LIST__ = $menu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$me): $mod = ($i % 2 );++$i;?>
-        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><i class="layui-icon <?php echo $me['ico']; ?>"></i><?php echo $me['title']; ?></a>
+        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><div><i class="layui-icon <?php echo $me['ico']; ?>"></i></div><?php echo $me['title']; ?></a>
         <?php endforeach; endif; else: echo "" ;endif; ?>
-        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><i class="layui-icon layui-icon-fonts-html"></i>文档助手</a>
+        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><div><i class="layui-icon layui-icon-fonts-html"></i></div>文档助手</a>
     </div>
     <div class="right">
         <a href="/" target="_blank" title="首页"><i class="layui-icon layui-icon-release"></i></a>
@@ -62,6 +60,10 @@
     }
     .layui-colorpicker-trigger-span{
         border: 1px solid #fff;
+    }
+    .admin_main>.content_box>.admin_left_nav>.nav.navcur{
+        background-color: <?php echo config("site.color"); ?>;
+        color:#fff;
     }
 </style>
 <script>
@@ -142,6 +144,9 @@
 <!--左边栏目-->
 <div class="left_menu">
     <div class="menu">
+
+        <a href="<?php echo url('index/index'); ?>" style="text-align: center">管理控制台</a>
+
         <div class="touxiang">
             <a href="<?php echo url('index/editadmin'); ?>">
                 <div style="background: #fff"><img src="<?php echo \think\Session::get('admini.pic'); ?>" alt=""></div>
@@ -162,87 +167,46 @@
 
 <div class="admin_main">
     <div class="container">
-        <blockquote class="layui-elem-quote">菜单管理</blockquote>
+        <blockquote class="layui-elem-quote">模块类型</blockquote>
         <div class="btn_tj">
-            <a href="<?php echo url('menu/add'); ?>" class="layui-btn layui-btn-sm"><i class="layui-icon"></i>添加</a>
+            <a href="<?php echo url('models/showadd'); ?>" class="layui-btn layui-btn-sm"><i class="layui-icon"></i>添加模型</a>
         </div>
         <div class="layui-form">
             <table class="layui-table">
                 <colgroup>
                     <col width="50">
                     <col width="200">
-                    <col>
                     <col width="200">
+                    <col>
                     <col width="100">
                     <col width="100">
-                    <col width="150">
+
                 </colgroup>
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>栏目名称</th>
-                    <th>url</th>
-                    <th>添加时间</th>
+                    <th>模型名称</th>
+                    <th>数据表名</th>
+                    <th>描述</th>
                     <th>排序</th>
-                    <th>状态</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php if(is_array($adminmenu) || $adminmenu instanceof \think\Collection || $adminmenu instanceof \think\Paginator): $i = 0; $__LIST__ = $adminmenu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$adminmenu): $mod = ($i % 2 );++$i;?><!--一级栏目-->
+                <?php if(is_array($models) || $models instanceof \think\Collection || $models instanceof \think\Paginator): $i = 0; $__LIST__ = $models;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$models): $mod = ($i % 2 );++$i;?>
                 <tr>
-                    <td><?php echo $adminmenu['id']; ?></td>
-                    <td><?php if(($adminmenu['ico'])): ?><i class="tabi layui-icon <?php echo $adminmenu['ico']; ?>"></i><?php endif; ?><?php echo $adminmenu['title']; ?></td>
-                    <td align="center"><?php echo $adminmenu['url']; ?></td>
-                    <td><?php echo date("Y-m-d H:i:s",$adminmenu['add_time']); ?></td>
+                    <td><?php echo $models['id']; ?></td>
+                    <td><?php echo $models['name']; ?></td>
+                    <td><?php echo $models['bname']; ?></td>
+                    <td><?php echo $models['con']; ?></td>
                     <td>
-                        <input type="text" class="sort" data-id="<?php echo $adminmenu['id']; ?>" value="<?php echo $adminmenu['sort']; ?>">
+                        <input type="text" class="sort" data-id="<?php echo $models['id']; ?>" value="<?php echo $models['sort']; ?>">
                     </td>
                     <td>
-                        <input type="checkbox" <?php if(($adminmenu['state'])): ?>checked=""<?php endif; ?> name="state" data-id="<?php echo $adminmenu['id']; ?>" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
-                    </td>
-                    <td>
-                        <a href="<?php echo url('menu/edit',['id'=>$adminmenu['id']]); ?>" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
-                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="<?php echo $adminmenu['id']; ?>"><i class="layui-icon"></i></button>
+                        <a href="<?php echo url('models/showfield',['mid'=>$models['id']]); ?>" class="layui-btn layui-btn-sm layui-btn-normal">字段管理(<?php echo $models['count']; ?>)</a>
                     </td>
                 </tr>
-                <?php if(is_array($adminmenusub) || $adminmenusub instanceof \think\Collection || $adminmenusub instanceof \think\Paginator): $i = 0; $__LIST__ = $adminmenusub;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$adminmenusub1): $mod = ($i % 2 );++$i;?><!--二级栏目-->
-                <?php if(($adminmenusub1['pid'] == $adminmenu['id'])): ?>
-                <tr>
-                    <td><?php echo $adminmenusub1['id']; ?></td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--<?php if(($adminmenusub1['ico'])): ?><i class="tabi layui-icon <?php echo $adminmenusub1['ico']; ?>"></i><?php endif; ?><?php echo $adminmenusub1['title']; ?></td>
-                    <td align="center"><?php echo $adminmenusub1['url']; ?></td>
-                    <td><?php echo date("Y-m-d H:i:s",$adminmenusub1['add_time']); ?></td>
-                    <td>
-                        <input type="text" class="sort" data-id="<?php echo $adminmenusub1['id']; ?>" value="<?php echo $adminmenusub1['sort']; ?>">
-                    </td>
-                    <td>
-                        <input type="checkbox" <?php if(($adminmenusub1['state'])): ?>checked=""<?php endif; ?> name="state" data-id="<?php echo $adminmenusub1['id']; ?>" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
-                    </td>
-                    <td>
-                        <a href="<?php echo url('menu/edit',['id'=>$adminmenusub1['id']]); ?>" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
-                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="<?php echo $adminmenusub1['id']; ?>"><i class="layui-icon"></i></button>
-                    </td>
-                </tr>
-                <?php if(is_array($adminmenusub) || $adminmenusub instanceof \think\Collection || $adminmenusub instanceof \think\Paginator): $i = 0; $__LIST__ = $adminmenusub;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$adminmenusub3): $mod = ($i % 2 );++$i;?><!--三级栏目-->
-                <?php if(($adminmenusub1['id'] == $adminmenusub3['pid'])): ?>
-                <tr>
-                    <td><?php echo $adminmenusub3['id']; ?></td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--<?php if(($adminmenusub3['ico'])): ?><i class="tabi layui-icon <?php echo $adminmenusub3['ico']; ?>"></i><?php endif; ?><?php echo $adminmenusub3['title']; ?></td>
-                    <td align="center"><?php echo $adminmenusub3['url']; ?></td>
-                    <td><?php echo date("Y-m-d H:i:s",$adminmenusub3['add_time']); ?></td>
-                    <td>
-                        <input type="text" class="sort" data-id="<?php echo $adminmenusub3['id']; ?>" value="<?php echo $adminmenusub3['sort']; ?>">
-                    </td>
-                    <td>
-                        <input type="checkbox" <?php if(($adminmenusub3['state'])): ?>checked=""<?php endif; ?> name="state" data-id="<?php echo $adminmenusub3['id']; ?>" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
-                    </td>
-                    <td>
-                        <a href="<?php echo url('menu/edit',['id'=>$adminmenusub3['id']]); ?>" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
-                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="<?php echo $adminmenusub3['id']; ?>"><i class="layui-icon"></i></button>
-                    </td>
-                </tr>
-                <?php endif; endforeach; endif; else: echo "" ;endif; endif; endforeach; endif; else: echo "" ;endif; endforeach; endif; else: echo "" ;endif; ?>
+                <?php endforeach; endif; else: echo "" ;endif; ?>
                 </tbody>
             </table>
         </div>
@@ -259,7 +223,7 @@
             var obs = $(this);
             $.ajax({
                 type: "POST",
-                url: '<?php echo url("menu/editsort"); ?>',
+                url: '<?php echo url("models/editsort",["mid"=>2]); ?>',
                 data:{'id':id,'sort':obs.val()},
                 success: function(msg){
                     if(msg){
@@ -296,26 +260,6 @@
                 });
             });
         })
-        form.on('switch(switchTest)', function(data){
-            var state = this.checked ? 1 :0;
-            var id = $(this).attr('data-id');
-            $.ajax({
-                type: "POST",
-                url: '<?php echo url("menu/editstate"); ?>',
-                data:{'id':id,'state':state},
-                success: function(msg){
-                    if(msg){
-                        if(state){
-                            layer.msg('栏目正常显示', {icon: 1});
-                        }else{
-                            layer.msg('栏目暂停显示', {icon: 5});
-                        }
-                    }else{
-                        layer.msg('状态更新失败', {icon: 5});
-                    }
-                }
-            });
-        });
     })
 </script>
 

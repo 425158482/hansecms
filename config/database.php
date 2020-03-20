@@ -2,7 +2,7 @@
 return [
 	'type'=>'mysql',
 	'hostname'=>'127.0.0.1',
-	'database'=>'hs_cn',
+	'database'=>'hanse_cms',
 	'username'=>'root',
 	'password'=>'root',
 	'hostport'=>'',

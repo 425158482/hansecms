@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:64:"D:\phpstudy_pro\WWW\hs.cn/application/admini\view\wap\index.html";i:1581506878;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\head.html";i:1575261362;s:66:"D:\phpstudy_pro\WWW\hs.cn\application\admini\view\public\menu.html";i:1577288697;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:68:"/Users/zhanghan/www/hansecms/application/admini/view/user/index.html";i:1577281810;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/head.html";i:1575261364;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/menu.html";i:1584714334;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,14 +14,12 @@
 </head>
 <body>
 <div class="top_menu">
-    <div class="left">
-        <a href="<?php echo url('index/index'); ?>">管理控制台</a>
-    </div>
+
     <div class="left">
         <?php if(is_array($menu) || $menu instanceof \think\Collection || $menu instanceof \think\Paginator): $i = 0; $__LIST__ = $menu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$me): $mod = ($i % 2 );++$i;?>
-        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><i class="layui-icon <?php echo $me['ico']; ?>"></i><?php echo $me['title']; ?></a>
+        <a href="<?php echo $me['url']; ?>.html" class="<?php if(($me['id']==$curl)): ?>t_curl<?php endif; ?> "><div><i class="layui-icon <?php echo $me['ico']; ?>"></i></div><?php echo $me['title']; ?></a>
         <?php endforeach; endif; else: echo "" ;endif; ?>
-        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><i class="layui-icon layui-icon-fonts-html"></i>文档助手</a>
+        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><div><i class="layui-icon layui-icon-fonts-html"></i></div>文档助手</a>
     </div>
     <div class="right">
         <a href="/" target="_blank" title="首页"><i class="layui-icon layui-icon-release"></i></a>
@@ -62,6 +60,10 @@
     }
     .layui-colorpicker-trigger-span{
         border: 1px solid #fff;
+    }
+    .admin_main>.content_box>.admin_left_nav>.nav.navcur{
+        background-color: <?php echo config("site.color"); ?>;
+        color:#fff;
     }
 </style>
 <script>
@@ -142,6 +144,9 @@
 <!--左边栏目-->
 <div class="left_menu">
     <div class="menu">
+
+        <a href="<?php echo url('index/index'); ?>" style="text-align: center">管理控制台</a>
+
         <div class="touxiang">
             <a href="<?php echo url('index/editadmin'); ?>">
                 <div style="background: #fff"><img src="<?php echo \think\Session::get('admini.pic'); ?>" alt=""></div>
@@ -159,112 +164,134 @@
     </div>
 </div>
 <!--中间内容-->
+
 <div class="admin_main">
     <div class="container">
-        <blockquote class="layui-elem-quote">手机设置</blockquote>
-        <form class="layui-form menu_form" method="post">
-            <div class="layui-form-item">
-                <label class="layui-form-label">自动跳转</label>
-                <div class="layui-input-inline">
-                    <input type="checkbox" name="map_auto" value="1" <?php if(($map_auto)): ?>checked=""<?php endif; ?>  lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
-                </div>
-                <div class="layui-form-mid layui-word-aux"></div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">手机域名</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="wap_url" lay-verify="" value="<?php echo config('site.wap_url'); ?>" autocomplete="off" placeholder="网站域名" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">访问手机端域名 . <span style="color: red">不要填写http协议 , 否则无效</span></div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">手机LOGO</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="map_logo" id="site_logo" autocomplete="off" value="<?php echo config('site.map_logo'); ?>" placeholder="logo地址" class="layui-input">
-                </div>
-                <button type="button" class="layui-btn" id="logoup">上传图片</button>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label"></label>
-                <div class="layui-input-inline">
-                    <div class="layui-upload-list" style="margin: 0">
-                        <img class="layui-upload-img" src="<?php echo config('site.map_logo'); ?>" height="50" id="logo1">
-                        <p id="demoText"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">手机版权</label>
-                <div class="layui-input-inline">
-                    <textarea placeholder="请输入标语" name="map_bq" class="layui-textarea"><?php echo config('site.map_bq'); ?></textarea>
-
-                </div>
-                <div class="layui-form-mid layui-word-aux">用于手机底部版权信息</div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-input-inline"></label>
-                <div class="layui-input-block">
-                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
-                </div>
-            </div>
-        </form>
+        <blockquote class="layui-elem-quote">管理员分配</blockquote>
+        <div class="btn_tj">
+            <button class="layui-btn layui-btn-sm adduser"><i class="layui-icon"></i>添加管理</button>
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="100">
+                    <col width="200">
+                    <col width="150">
+                    <col>
+                    <col width="120">
+                    <col width="200">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>头像</th>
+                    <th>管理员</th>
+                    <th>账号</th>
+                    <th>类型</th>
+                    <th>最近IP</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(is_array($admin_user) || $admin_user instanceof \think\Collection || $admin_user instanceof \think\Paginator): $i = 0; $__LIST__ = $admin_user;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$admin_user): $mod = ($i % 2 );++$i;?>
+                <tr>
+                    <td><img style="width: 50px;height: 50px;border-radius: 50%" src="<?php echo $admin_user['pic']; ?>" alt=""></td>
+                    <td><?php echo $admin_user['name']; ?></td>
+                    <td><?php echo $admin_user['username']; ?></td>
+                    <td><?php if(($admin_user['type']==1)): ?>超级管理员<?php else: ?>普通管理员<?php endif; ?></td>
+                    <td>
+                        <?php echo $admin_user['ip']; ?>
+                    </td>
+                    <td>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-normal grade"  data-id="<?php echo url('user/grade',['id'=>$admin_user['id']]); ?>">权限</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-normal edit"  data-id="<?php echo url('user/edit',['id'=>$admin_user['id']]); ?>">修改</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-normal delete" data-id="<?php echo $admin_user['id']; ?>">删除</button>
+                    </td>
+                </tr>
+                <?php endforeach; endif; else: echo "" ;endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <script>
-    layui.use(['jquery','form','upload', 'layedit'], function() {
+    layui.use(['jquery','form', 'layedit'], function() {
         var form = layui.form
             , layer = layui.layer
             , jquery = layui.jquery
-            , upload = layui.upload
             , layedit = layui.layedit;
-        //自定义验证规则
-        form.on('submit(menu)', function(data){
-            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
-            jquery.ajax({
-                type:"post",
-                url :"<?php echo url('wap/upfiles'); ?>",
-                data:data,
-                success:function (msg) {
-                    console.log(msg)
-                    if(msg==1){
-                        layer.msg('更新成功!', {icon: 1});
+        $(document).on('blur','.sort', function () {
+            var id = $(this).attr('data-id');
+            var obs = $(this);
+            $.ajax({
+                type: "POST",
+                url: '<?php echo url("models/editsort",["mid"=>2]); ?>',
+                data:{'id':id,'sort':obs.val()},
+                success: function(msg){
+                    if(msg){
+                        layer.msg('排序已更改', {icon: 1});
                     }else{
-                        layer.msg('系统繁忙!', {icon: 5});
+                        layer.msg('排序更改失败', {icon: 5});
                     }
                 }
-            })
-            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
         });
-        //普通图片上传
-        var uploadInst = upload.render({
-            elem: '#logoup'
-            , url: '<?php echo url("uploads/uploads_img"); ?>'
-            , before: function (obj) {
-                //预读本地文件示例，不支持ie8
-                obj.preview(function (index, file, result) {
-                    $('#logo1').attr('src', result); //图片链接（base64）
+        //添加
+        $(".adduser").click(function () {
+            layer.open({
+                type: 2,
+                title:"添加管理员",
+                area: ['600px', '500px'],
+                shadeClose: true, //点击遮罩关闭
+                content: '<?php echo url("user/adduser"); ?>'
+            });
+        })
+        //编辑
+        $(".edit").click(function () {
+            var id = $(this).attr('data-id');
+            layer.open({
+                type: 2,
+                title:"修改管理员",
+                area: ['600px', '500px'],
+                shadeClose: true, //点击遮罩关闭
+                content: id
+            });
+        })
+        //权限
+        $(".grade").click(function () {
+            var id = $(this).attr('data-id');
+            layer.open({
+                type: 2,
+                title:"权限分配",
+                area: ['600px', '500px'],
+                shadeClose: true, //点击遮罩关闭
+                content: id
+            });
+        })
+        //删除
+        $(document).on('click','.delete', function () {
+            var id = $(this).attr('data-id');
+            layer.confirm('确定要删除吗？', {
+                btn: ['必须的','忍一手'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo url("user/delete"); ?>',
+                    data:{'id':id},
+                    success: function(msg){
+                        if(msg==1){
+                            layer.msg('删除成功', {icon: 1,time:1000}, function() {
+                                location.href="<?php echo url('user/index'); ?>";
+                            });
+                            location.href;
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }else{
+                            layer.msg(msg, {icon: 5});
+                        }
+                    }
                 });
-            }
-            , done: function (res) {
-                //如果上传失败
-                if (res.code == 1) {
-                    $("#site_logo").val(res.img_url)
-                    layer.msg('上传成功!', {icon: 1});
-                }
-                if(res.code == 0){
-                    layer.msg(res.error, {icon: 5});
-                }
-
-            }
-            , error: function () {
-                //演示失败状态，并实现重传
-                var demoText = $('#demoText');
-                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-                demoText.find('.demo-reload').on('click', function () {
-                    uploadInst.upload();
-                });
-            }
-        });
+            });
+        })
     })
 </script>
 

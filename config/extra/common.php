@@ -40,7 +40,7 @@ function upConfig($add,$config){
  **/
 function uedi_mi($id,$name,$content=""){
     $edit = '
-        <script type="text/plain" id="'.$id.'" name="'.$name.'" style="width:750px;height:150px;">
+        <script type="text/plain" id="'.$id.'" name="'.$name.'" style="width:645px;height:150px;">
          '.$content.'
         </script>
         <script>
@@ -68,7 +68,7 @@ function uedi_mi($id,$name,$content=""){
  **/
 function uedi($id,$name,$content=""){
     $edit = '
-        <script type="text/plain" id="'.$id.'" name="'.$name.'" style="width:750px;height:300px;">
+        <script type="text/plain" id="'.$id.'" name="'.$name.'" style="width:645px;height:300px;">
            '.$content.'
         </script>
         <script>
