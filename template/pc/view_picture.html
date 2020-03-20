@@ -1,0 +1,73 @@
+{extend name="index/base2" /}
+
+{block name="main"}
+
+<div class="hs_news_view">
+    <h1>{$content.title}</h1>
+    <div class="news_info">
+        <span>所属栏目 : {hs:navcon id="$content['pid']"}{$navcon.name}{/hs:navcon}</span>
+        <span>发布时间 : {$content.create_Time|date="Y-m-d",###}</span>
+        <span>作者 : {hs:config name='seo_title'/}</span>
+        <span>点击量 : {$content.click}</span>
+        <span class="bdsharebuttonbox">
+            <a href="#" class="bds_more" data-cmd="more"></a> <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a> <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        </span>
+        <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+    </div>
+    <!--详情-->
+    <div class="pro_info">
+        <div id="hs_contents">
+            <p style="text-align: center;margin: 20px 0"><img src="{$content.pic}" style="max-width: 80%" alt=""></p>
+            {$content.content.content}
+        </div>
+    </div>
+</div>
+<!--翻页-->
+<div class="hs_fy_con">
+    {if($content.prev.title)}
+    <a href="{$content.prev.url}"><span>{$content.prev.title}</span></a>
+    {else}
+    <a><span>没有了...</span></a>
+    {/if}
+
+    {if($content.next.title)}
+    <a href="{$content.next.url}"><span>{$content.next.title}</span></a>
+    {else}
+    <a><span>没有了...</span></a>
+    {/if}
+    <div style="clear: both"></div>
+</div>
+<!--相关推荐-->
+<div class="base2_tj">
+    <div>相关数据</div>
+    {hs:navcon id="$topnav"}
+    <div><a href="{$navcon.url}">更多-></a></div>
+    {/hs:navcon}
+    <div style="clear: both"></div>
+</div>
+<div class="xgtj_box">
+    <div class="swiper-wrapper">
+        {hs:list nid="$navid" order="create_Time desc" limit="5" reco="0" pagesize="0"}
+        <div class="swiper-slide">
+            <a href="{$list.url}">
+                <div><img src="{$list.pic}" alt=""></div>
+                <div>{$list.title}</div>
+                <div>{$list.content.desc}</div>
+            </a>
+        </div>
+        {/hs:list}
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+</div>
+<script>
+    var pictj = new Swiper('.xgtj_box', {
+        slidesPerView: 3,
+        spaceBetween: 40,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+</script>
+{/block}

@@ -1,0 +1,17 @@
+{extend name="wap/base" /}
+
+{block name="main"}
+<div class="show_news">
+    <div>{$content.title}</div>
+    <div>时间 : {$content.create_Time|date="Y-m-d",###}</div>
+    <div>
+        {$content.content.content}
+    </div>
+    <div>
+        <a href="{$content.prev.url}">上一篇 : {$content.prev.title}</a>
+        <a href="{$content.next.url}">下一篇 : {$content.next.title}</a>
+        <div style="clear:both;"></div>
+    </div>
+</div>
+
+{/block}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>{if(isset($content.title))}{$content.title}{else}{hs:navcon id="$navid"}{$navcon.name}{/hs:navcon}{/if} - {hs:seo name='seo_title'/}</title>
+    <meta name="keywords" content="{hs:seo name='seo_keywords'/}">
+    <meta name="description" content="{hs:seo name='seo_description'/}">
+    <link rel="stylesheet" type="text/css" href="__INDEX__/pc/css/swiper.css" />
+    <link rel="stylesheet" type="text/css" href="__INDEX__/pc/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__INDEX__/pc/common/animate.css" />
+    <link rel="stylesheet" type="text/css" href="__INDEX__/pc/common/common.css" />
+    <script src="__INDEX__/pc/common/jquery-1.11.1.min.js"></script>
+    <script src="__INDEX__/pc/js/swiper.js"></script>
+    <style>
+        .tj_hs_n>a:hover>span{
+            color: red;
+        }
+        .hs_fn{
+            height: 100px;
+            background: red;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .dqwz>div>.right:hover{
+            color: red;
+            font-weight: 700;
+        }
+        .dqwz>div>.left>a:hover{
+            color: red;
+            font-weight: 700;
+        }
+        .hs_n_nav>div>a:hover{
+            background: red;
+            color: #fff;
+        }
+        .n_product>.left>a>.p_dis>div:nth-child(3):hover{
+            background: red;
+            border: 1px solid red;
+        }
+        .hs_list_news>.right>div:nth-child(1)>a:hover{
+            color: red;
+        }
+        .hs_list_news:hover{
+            box-shadow: 0 5px 12px rgba(0, 0, 0, .5);
+        }
+        .hs_n_nav>div>a.suba{
+            background: red;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<!--头部-->
+{include file="pc/public_header"}
+<!--banner-->
+<hr>
+
+<!--当前位置-->
+<div class="dqwz">
+    <div>
+        <div class="left">当前位置 : {hs:current name=" >> " /}</div>
+        <div class="right" onclick="javascript :history.back(-1);">返回</div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+<!--内容快-->
+<div class="hs_main">
+    <div class="left">
+        <div class="hs_fn">
+            <div></div>
+            <div>{hs:navcon id="$topnav"}{$navcon.name}{/hs:navcon}</div>
+        </div>
+        <div class="hs_n_nav">
+            {hs:navsub pid="$topnav" limit="100" order="id asc"}
+            <div>
+                <a href="{$navsub.url}" class="animated {if($navid==$navsub.id)}suba{/if}">{$navsub.name}</a>
+            </div>
+            {/hs:navsub}
+        </div>
+        <div class="cp_tj">
+            <div class="hs_tj_t">产品推荐</div>
+            <div class="hs_tj_box">
+                <div class="swiper-wrapper">
+                    {hs:list nid="1" order="create_Time desc" limit="5" reco="1" pagesize=""}
+                    <div class="swiper-slide">
+                        <a href="">
+                            <img src="{$list.pic}" alt="">
+                            <div>{$list.title}</div>
+                        </a>
+                    </div>
+                    {/hs:list}
+                </div>
+                <!-- Add Arrows -->
+                <div class="swiper-button-next swiper-button-nexthstj"></div>
+                <div class="swiper-button-prev swiper-button-prevhstj"></div>
+            </div>
+        </div>
+        <div class="cp_tj hs_news_tj">
+            <div class="hs_tj_t">新闻推荐</div>
+            <div class="tj_hs_n">
+                {hs:list nid="6" order="create_Time desc" limit="5" reco="1" pagesize=""}
+                <a href="{$list.url}">
+                    <span class="animated">{$list.title}</span>
+                    <span>{$list.create_Time|date="m-d",###}</span>
+                    <div style="clear: both"></div>
+                </a>
+                {/hs:list}
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="hs_con_na">{hs:navcon id="$navid"}{$navcon.name}{/hs:navcon}</div>
+        {block name="main"}
+
+        {/block}
+    </div>
+    <div style="clear: both"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--底部-->
+{include file="pc/public_footer"}
+
+<script src="__INDEX__/pc/js/index.js"></script>
+<script src="__INDEX__/pc/common/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<div class="top_hy">
+    <div>
+        <div class="left">欢迎访问{hs:config name='site_name'/}官网！</div>
+        <div class="right">
+
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+<!--头部logo-->
+<div class="top_logo">
+    <div class="left">
+        <div class="img"><img src="{hs:config name='site_logo'/}" alt="{hs:config name='site_name'/}"></div>
+        <div class="wz">{hs:config name='site_logo_name'/}</div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="right">
+        <div>泓呈咨询热线</div>
+        <div>{hs:debris title="phone" /}</div>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<!--头部导航-->
+<div class="top_nav" id="top_nav">
+    <div>
+        <?php $navid = isset($navid) ? $navid : 0;  ?>
+        <?php $topnav = isset($topnav) ? $topnav : 0;  ?>
+        <div class="title"><a href="/"  {if ($navid==0)}class="active"{/if} title="首页">首页</a></div>
+        {hs:nav limit="10"}
+        <div class="title"><a href="{$nav.url}" {if $navid==$nav["id"]||$topnav==$nav['id']}class="active"{/if} title="{$nav.name}">{$nav.name}<span>/</span></a></div>
+        {/hs:nav}
+        <div style="clear:both"></div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">模块类型</blockquote>
+        <div class="btn_tj">
+            <a href="{:url('models/showadd')}" class="layui-btn layui-btn-sm"><i class="layui-icon"></i>添加模型</a>
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="200">
+                    <col width="200">
+                    <col>
+                    <col width="100">
+                    <col width="100">
+
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>模型名称</th>
+                    <th>数据表名</th>
+                    <th>描述</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="models" id="models"}
+                <tr>
+                    <td>{$models.id}</td>
+                    <td>{$models.name}</td>
+                    <td>{$models.bname}</td>
+                    <td>{$models.con}</td>
+                    <td>
+                        <input type="text" class="sort" data-id="{$models.id}" value="{$models.sort}">
+                    </td>
+                    <td>
+                        <a href="{:url('models/showfield',['mid'=>$models.id])}" class="layui-btn layui-btn-sm layui-btn-normal">字段管理({$models.count})</a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        $(document).on('blur','.sort', function () {
+            var id = $(this).attr('data-id');
+            var obs = $(this);
+            $.ajax({
+                type: "POST",
+                url: '{:url("models/editsort",["mid"=>2])}',
+                data:{'id':id,'sort':obs.val()},
+                success: function(msg){
+                    if(msg){
+                        layer.msg('排序已更改', {icon: 1});
+                    }else{
+                        layer.msg('排序更改失败', {icon: 5});
+                    }
+                }
+            });
+        });
+        $(document).on('click','.delete', function () {
+            var id = $(this).attr('data-id');
+            layer.confirm('确定要删除吗？', {
+                btn: ['必须的','忍一手'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("menu/delete")}',
+                    data:{'id':id},
+                    success: function(msg){
+                        if(msg==1){
+                            layer.msg('删除成功', {icon: 1,time:1000}, function() {
+                                location.href="{:url('menu/index')}";
+                            });
+                            location.href;
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }else if(msg==2){
+                            layer.msg('请先删除子菜单', {icon: 5});
+                        }else{
+                            layer.msg('系统繁忙', {icon: 5});
+                        }
+                    }
+                });
+            });
+        })
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

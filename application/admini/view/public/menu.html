@@ -1,0 +1,145 @@
+<div class="top_menu">
+    <div class="left">
+        <a href="{:url('index/index')}">管理控制台</a>
+    </div>
+    <div class="left">
+        {volist name="menu" id="me"}
+        <a href="{$me.url}.html" class="{if ($me.id==$curl)}t_curl{/if} "><i class="layui-icon {$me.ico}"></i>{$me.title}</a>
+        {/volist}
+        <a href="https://www.kancloud.cn/zhhan/hanse/1328649" target="_blank"><i class="layui-icon layui-icon-fonts-html"></i>文档助手</a>
+    </div>
+    <div class="right">
+        <a href="/" target="_blank" title="首页"><i class="layui-icon layui-icon-release"></i></a>
+        <a class="cache" title="清除缓存"><i class="layui-icon layui-icon-delete"></i></a>
+        <a id="color1" title="更换主题"><i class="layui-icon layui-icon-theme"></i></a>
+        <a class="logoaut" title="退出"><i class="layui-icon layui-icon-radio"></i></a>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<style>
+
+    #ueditor_1 img{
+        width: 100%;
+    }
+    .layui-layer-molv .layui-layer-btn a,.layui-layer-molv .layui-layer-title,.layui-laypage .layui-laypage-curr .layui-laypage-em,.top_menu,.left_menu,.layui-btn,.btn_tj>.layui-btn,.layui-form-onswitch,.ad_in_na,::-webkit-scrollbar-thumb,.layui-form-select dl dd.layui-this,.layui-layer-lan .layui-layer-title{
+        background-color: {:config("site.color")};
+    }
+    .layui-elem-quote{
+        border-left: 5px solid {:config("site.color")};
+    }
+    .layui-layer-molv .layui-layer-btn a,.layui-form-onswitch{
+        border-color: {:config("site.color")};
+    }
+    .layui-tab-brief>.layui-tab-title .layui-this{
+        color: {:config("site.color")};
+    }
+    .layui-tab-brief>.layui-tab-more li.layui-this:after, .layui-tab-brief>.layui-tab-title .layui-this:after{
+        border-bottom: 2px solid {:config("site.color")};
+    }
+    .layui-btn-primary{
+        border: 1px solid {:config("site.color")};
+    }
+    .layui-btn{
+        color: #fff;
+    }
+    .layui-colorpicker{
+        border: 0;
+    }
+    .layui-colorpicker-trigger-span{
+        border: 1px solid #fff;
+    }
+</style>
+<script>
+    layui.use(['jquery','form','element', 'layedit','upload','colorpicker'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            ,colorpicker = layui.colorpicker;
+        {if($Think.session.qxbz)}
+        layer.msg('{$Think.session.qxbz}', {icon: 5,time: 2000});
+        {/if}
+        colorpicker.render({
+            elem: '#color1'
+            ,color: '{:config("site.color")}'
+            ,format: 'rgb'
+            ,predefine: true
+            ,alpha: true
+            ,done: function(color){
+                $('#test-all-input').val(color); //向隐藏域赋值
+                jquery.ajax({
+                    type: "post",
+                    url: "{:url('index/theme')}",
+                    data:{color:color},
+                    success: function (msg) {
+                        if(msg==1){
+                            layer.msg('设置成功', {icon: 1,time: 2000});
+                        }else{
+                            layer.msg('设置失败', {icon: 1,time: 2000});
+                        }
+                    }
+                })
+                color || this.change(color); //清空时执行 change
+            }
+            ,change: function(color){
+                //给当前页面头部和左侧设置主题色
+                $('.top_menu,.left_menu,.layui-btn,.btn_tj>.layui-btn,.layui-form-onswitch,.ad_in_na,::-webkit-scrollbar-thumb').css('background-color', color);
+            }
+        });
+        //询问框
+        $(".logoaut").click(function () {
+            layer.confirm('确定要退出当前账户吗？', {
+                btn: ['确定','关闭'] //按钮
+            }, function(){
+                jquery.ajax({
+                    type: "post",
+                    url: "{:url('login/logoaut')}",
+                    success: function (msg) {
+                        if(msg==1){
+                            layer.msg('退出成功', {icon: 1,time: 1000}, function() {
+                                location.href="{:url('login/login')}";
+                            });
+                        }
+
+                    }
+                })
+            });
+        })
+        //询问框
+        $(".cache").click(function () {
+            layer.confirm('确定要清除缓存？', {
+                btn: ['确定','关闭'] //按钮
+            }, function(){
+                jquery.ajax({
+                    type: "post",
+                    url: "{:url('index/caches')}",
+                    success: function (msg) {
+                        console.log(msg)
+                        if(msg==1){
+                            layer.msg('清除成功', {icon: 1,time: 1000});
+                        }
+                    }
+                })
+            });
+        })
+
+    })
+</script>
+<!--左边栏目-->
+<div class="left_menu">
+    <div class="menu">
+        <div class="touxiang">
+            <a href="{:url('index/editadmin')}">
+                <div style="background: #fff"><img src="{$Think.Session.admini.pic}" alt=""></div>
+                <div>{$Think.Session.admini.name}</div>
+                <div style="clear: both"></div>
+            </a>
+
+        </div>
+        {volist name="menusub" id="menusubs"}
+        <a href="{$menusubs.url}.html" class=" {if($menusubs.id==$action)}t_curl{/if} ">
+            <i class="layui-icon {$menusubs.ico}"></i>
+            {$menusubs.title}
+        </a>
+        {/volist}
+    </div>
+</div>

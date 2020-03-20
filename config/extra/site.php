@@ -1,0 +1,62 @@
+<?php 
+return [
+	'file_img'=>'png,jpg,gif',
+	'file_img_size'=>'800',
+	'file_size'=>'102424',
+	'file_form'=>'zip,txt,pdf',
+	'site_name'=>'',
+	'site_url'=>'',
+	'site_logo'=>'',
+	'site_logo_name'=>'',
+	'map_auto'=>'1',
+	'map_url'=>'',
+	'map_logo'=>'',
+	'map_bq'=>'',
+	'seo_title'=>'壹恩建站,重庆网站设计,重庆网站制作,重庆公众号制作,重庆小程序制作,重庆seo排名,重庆网站改版,重庆网站托管',
+	'seo_keywords'=>'重庆网站设计,重庆网站制作,重庆公众号制作,重庆小程序制作,重庆seo排名,重庆网站改版,重庆网站托管',
+	'seo_description'=>'重庆壹恩建站， 经过多年的不懈努力，公司现已经成为一家专业从事IT产品开发、生产和销售的高科技工作室。广泛应用于计算机网络、设计、SEO优化、关键词排名等多种行业',
+	'f_seo_title'=>'[address]壹恩建站,[address]网站设计,[address]网站制作,[address]公众号制作,[address]小程序制作,[address]seo排名,[address]网站改版,[address]网站托管',
+	'f_seo_keywords'=>'[address]网站设计,[address]网站制作,[address]公众号制作,[address]小程序制作,[address]seo排名,[address]网站改版,[address]网站托管',
+	'f_seo_description'=>'[address]壹恩建站， 经过多年的不懈努力，公司现已经成为一家专业从事IT产品开发、生产和销售的高科技工作室。广泛应用于计算机网络、设计、SEO优化、关键词排名等多种行业',
+	'tj_url'=>'https://baidu.com',
+	'login_bg'=>'/uploads/20200212/1b821f77685219dca8083dd824288e4b.jpg',
+	'slide'=>'1',
+	'color'=>'rgba(57, 61, 73, 1)',
+	'witty'=>'1',
+	'witty_con'=>'最佳|更佳
+最具|更具
+最爱|更爱
+最赚|更赚
+最优|更优
+最优秀|更优秀
+最好|更好
+最大|更大
+最大程度|更大程度
+最高|更高
+最高级|更高级
+最高端|更高端
+最奢侈|更奢侈
+最低|更低
+最低级|更低级
+最底|更底
+最便宜|更便宜
+史上最低价|史上更低价
+最流行|更流行
+最受欢迎|更受欢迎
+最时尚|更时尚
+最聚拢|更聚拢
+最符合|更符合
+最舒适|更舒适
+最先|更先
+最先进|更先进
+最先进科学|更先进科学
+最先进加工工艺|更先进加工工艺
+最享受|更享受',
+	'mail_auto'=>'0',
+	'js_mail'=>'',
+	'fs_mail'=>'',
+	'jz_name'=>'',
+	'code_mail'=>'',
+	'baidu_ts'=>'',
+	'wap_url'=>'',
+];

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">手机设置</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">自动跳转</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="map_auto" value="1" {if($map_auto)}checked=""{/if}  lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">手机LOGO</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="map_logo" id="site_logo" autocomplete="off" value="{:config('site.map_logo')}" placeholder="logo地址" class="layui-input">
+                </div>
+                <button type="button" class="layui-btn" id="logoup">上传图片</button>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline">
+                    <div class="layui-upload-list" style="margin: 0">
+                        <img class="layui-upload-img" src="{:config('site.map_logo')}" height="50" id="logo1">
+                        <p id="demoText"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">手机版权</label>
+                <div class="layui-input-inline">
+                    <textarea placeholder="请输入标语" name="map_bq" class="layui-textarea">{:config('site.map_bq')}</textarea>
+
+                </div>
+                <div class="layui-form-mid layui-word-aux">用于手机底部版权信息</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-input-inline"></label>
+                <div class="layui-input-block">
+                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form','upload', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , upload = layui.upload
+            , layedit = layui.layedit;
+        //自定义验证规则
+        form.on('submit(menu)', function(data){
+            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+            jquery.ajax({
+                type:"post",
+                url :"{:url('wap/upfiles')}",
+                data:data,
+                success:function (msg) {
+                    console.log(msg)
+                    if(msg==1){
+                        layer.msg('更新成功!', {icon: 1});
+                    }else{
+                        layer.msg('系统繁忙!', {icon: 5});
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#logoup'
+            , url: '{:url("uploads/uploads_img")}'
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#logo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code == 1) {
+                    $("#site_logo").val(res.img_url)
+                    layer.msg('上传成功!', {icon: 1});
+                }
+                if(res.code == 0){
+                    layer.msg(res.error, {icon: 5});
+                }
+
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

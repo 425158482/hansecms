@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">添加类型</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <input type="hidden" name="__token__" value="{$Request.token}" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" value="{$banner.name}" lay-verify="name" autocomplete="off" placeholder="请输入图片名称" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">中文名称</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">上传图片</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="pic" value="{$banner.pic}" id="pic" lay-verify="pic" placeholder="上传图片" autocomplete="off" class="layui-input">
+                </div>
+                <button type="button" class="layui-btn" id="logoup">上传图片</button>
+            </div>
+            <div class="layui-form-item" id="imgshow">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline">
+                    <div class="layui-upload-list" style="margin: 0;">
+                        <img class="layui-upload-img" src="{$banner.pic}" height="50" id="logo1">
+                        <p id="demoText"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">摘要</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="desc" autocomplete="off" value="{$banner.desc}" placeholder="描述" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">链接地址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="url" lay-verify="urls" autocomplete="off" value="{$banner.url}" placeholder="" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">需要输入http://或https://</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="sort" lay-verify="sort" autocomplete="off" value="{$banner.sort}" placeholder="序号默认0" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="type" value="1" title="电脑" {if($banner.type==1)}checked=""{/if} >
+                    <input type="radio" name="type" value="2" title="手机" {if($banner.type==2)}checked=""{/if}>
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-input-inline"></label>
+                <div class="layui-input-block">
+                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit','upload'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , upload = layui.upload
+            , layedit = layui.layedit;
+        //自定义验证规则
+        form.verify({
+            name: function(value){
+                if(value.length < 1){
+                    return '名称总得写点什么吧?';
+                }
+            },
+            pic: function(value){
+                if(value.length < 1){
+                    return '图片也不考虑一下?';
+                }
+            },
+        });
+        form.on('submit(menu)', function(data){
+            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+            jquery.ajax({
+                type:"post",
+                url :"{:url('banner/update',['id'=>$banner.id])}",
+                data:data,
+                success:function (msg) {
+                    if(msg==1){
+                        layer.alert('保存成功!', {
+                            skin: 'layui-layer-lan' //样式类名
+                            ,closeBtn: 0
+                        }, function() {
+                            location.href="{:url('banner/index')}";
+                        })
+                    }else if(msg==0){
+                        layer.msg('系统繁忙!', {icon: 5});
+                    }else if(msg==2){
+                        layer.msg('令牌验证失败!', {icon: 5});
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+
+        });
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#logoup'
+            , url: '{:url("uploads/uploads_img")}'
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#logo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code == 1) {
+                    $("#imgshow").show();
+                    $("#pic").val(res.img_url);
+                    layer.msg('上传成功!', {icon: 1});
+                }
+                if(res.code == 0){
+                    layer.msg(res.error, {icon: 5});
+                }
+
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

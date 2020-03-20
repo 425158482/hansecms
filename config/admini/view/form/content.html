@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">{$form.name}--收集内容</blockquote>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="150">
+                    <col width="150">
+                    <col>
+                    <col width="140">
+
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>提交IP</th>
+                    <th>状态</th>
+                    <th>提交时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="content" id="content"}
+                <tr>
+                    <td>{$content.id}</td>
+                    <td>{$content.ip}</td>
+                    <td>
+                        {if($content.static==1)}
+                        <span style="color: #0ac265">未读</span>
+                        {else}
+                        <span style="color: red">已读</span>
+                        {/if}
+                    </td>
+                    <td>{$content.create_time|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm yuedu" data-id="{$content.id}" data-fid="{$content.fid}" data-conid="{$content.conid}">阅读</button>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="{$content.id}"><i class="layui-icon"></i></button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        $(document).on('blur','.sort', function () {
+            var id = $(this).attr('data-id');
+            var obs = $(this);
+            $.ajax({
+                type: "POST",
+                url: '{:url("models/editsort")}',
+                data:{'id':id,'sort':obs.val()},
+                success: function(msg){
+                    if(msg){
+                        layer.msg('排序已更改', {icon: 1});
+                    }else{
+                        layer.msg('排序更改失败', {icon: 5});
+                    }
+                }
+            });
+        });
+        $(document).on('click','.delete', function () {
+            var id = $(this).attr('data-id');
+            layer.confirm('确定要删除吗？', {
+                btn: ['必须的','忍一手'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("form/deletecon")}',
+                    data:{'id':id},
+                    success: function(msg){
+                        console.log(msg)
+                        if(msg==1){
+                            layer.msg('删除成功', {icon: 1,time:1000}, function() {
+                                location.href="{:url('form/content',['fid'=>$form.id])}";
+                            });
+                            location.href;
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }else{
+                            layer.msg('系统繁忙', {icon: 5});
+                        }
+                    }
+                });
+            });
+        })
+        //阅读
+        $(document).on('click','.yuedu', function () {
+            var id = $(this).attr('data-id');
+            var conid = $(this).attr('data-conid');
+            var fid = $(this).attr('data-fid');
+            $.ajax({
+                type: "POST",
+                url: '{:url("form/showcon")}',
+                data:{'id':id,"conid":conid,"fid":fid},
+                success: function(msg){
+                    console.log(msg)
+                    layer.open({
+                        type: 1,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['420px', '240px'], //宽高
+                        content: msg
+                    });
+                }
+            });
+
+        })
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

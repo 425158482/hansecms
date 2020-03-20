@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">添加字段</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">字段类型</label>
+                <div class="layui-input-inline">
+                    <select name="type" lay-filter="aihao">
+                        <option value=""></option>
+                        <option value="1">单行文本框</option>
+                        <option value="3">简约编辑器</option>
+                        <option value="4">丰富编辑器</option>
+
+                        <option value="6">多图上传</option>
+                        <option value="7">文件上传</option>
+                    </select>
+                </div>
+                <div class="layui-form-mid layui-word-aux">中文名称</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">中文名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" value="" lay-verify="title" autocomplete="off" placeholder="中文名称" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">中文名称</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">字段名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="field" lay-verify="" value="" autocomplete="off" placeholder="字段名" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">只能是英文,符号可 " _ " </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否必填</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="space" value="0" title="否" checked="">
+                    <input type="radio" name="space" value="1" title="是">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="sort" lay-verify="sort" autocomplete="off" value="0" placeholder="序号默认0" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-input-inline"></label>
+                <div class="layui-input-block">
+                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        //自定义验证规则
+        form.on('submit(menu)', function(data){
+            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+            jquery.ajax({
+                type:"post",
+                url :"{:url('models/savefield',['mid'=>$mid])}",
+                data:data,
+                success:function (msg) {
+                    console.log(msg)
+                    if(msg==1){
+                        layer.alert('添加成功!', {
+                            skin: 'layui-layer-lan' //样式类名
+                            ,closeBtn: 0
+                        }, function() {
+                            location.href="{:url('models/showfield',['mid'=>$mid])}";
+                        })
+                    }else{
+                        layer.msg('系统繁忙!', {icon: 5});
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+
+        });
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

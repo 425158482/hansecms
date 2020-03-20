@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+    <style>
+        .layui-form-item .layui-input-inline{
+            width: 290px;
+        }
+    </style>
+</head>
+<body style="min-width: auto">
+
+
+<div id="test3" class="demo-transfer" style="width: 480px;margin: auto;margin-top: 20px"></div>
+<div class="layui-btn-container" style="text-align: center;margin-top: 20px">
+    <button type="button" class="layui-btn" lay-demotransferactive="getData">确认分配</button>
+</div>
+
+
+
+
+
+
+
+
+<script>
+    layui.use(['transfer','jquery', 'layer', 'util'], function(){
+        var $ = layui.$
+            ,transfer = layui.transfer
+            , jquery = layui.jquery
+            ,layer = layui.layer
+            ,util = layui.util;
+
+        //模拟数据
+        var data1 = {$json}
+
+        //初始右侧数据
+        transfer.render({
+            title: ['未分配', '已有权限']
+            ,elem: '#test3'
+            ,data: data1
+            ,value: [{$dqqx.grade}]
+            ,id : 'key123'
+        })
+
+        //批量办法定事件
+        util.event('lay-demoTransferActive', {
+            getData: function(othis){
+                var getData = transfer.getData('key123'); //获取右侧数据
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("user/savegrade",["id"=>$dqqx.id])}',
+                    data:{getData},
+                    success: function(msg){
+                        console.log(msg)
+                        if(msg==1){
+                            layer.msg('权限分配成功', {icon: 1});
+                            setInterval(function () {
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                                parent.layer.close(index); //再执行关闭
+                            },1000)
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }else{
+                            layer.msg(msg, {icon: 5});
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+
+
+</body>
+</html>

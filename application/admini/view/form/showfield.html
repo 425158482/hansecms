@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">字段管理</blockquote>
+        <div class="btn_tj">
+            <a href="{:url('form/showfieldadd',['fid'=>$fid])}" class="layui-btn layui-btn-sm"><i class="layui-icon"></i>添加字段</a>
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="200">
+                    <col width="200">
+                    <col>
+                    <col width="100">
+                    <col width="150">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>中文名称</th>
+                    <th>表字段</th>
+                    <th>类型</th>
+                    <th>必填</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="field" id="field"}
+                <tr>
+                    <td>{$field.id}</td>
+                    <td>{$field.name}</td>
+                    <td>{$field.field}</td>
+                    <td>{$field.type}</td>
+                    <td>
+                        {if($field.space==1)}
+                        是
+                        {else}
+                        否
+                        {/if}
+                    </td>
+                    <td>
+                        <input type="text" class="sort" data-id="{$field.id}" value="{$field.sort}">
+                    </td>
+                    <td>
+                        <a href="{:url('form/editfield',['id'=>$field.id])}" type="button" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="{$field.id}"><i class="layui-icon"></i></button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        $(document).on('blur','.sort', function () {
+            var id = $(this).attr('data-id');
+            var obs = $(this);
+            $.ajax({
+                type: "POST",
+                url: '{:url("form/editsort",["fid"=>1])}',
+                data:{'id':id,'sort':obs.val()},
+                success: function(msg){
+                    if(msg){
+                        layer.msg('排序已更改', {icon: 1});
+                    }else{
+                        layer.msg('排序更改失败', {icon: 5});
+                    }
+                }
+            });
+        });
+        $(document).on('click','.delete', function () {
+            var id = $(this).attr('data-id');
+            layer.confirm('确定要删除吗？', {
+                btn: ['必须的','忍一手'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("form/deletefield")}',
+                    data:{'id':id},
+                    success: function(msg){
+                        console.log(msg)
+                        if(msg==1){
+                            layer.msg('删除成功', {icon: 1,time:1000}, function() {
+                                location.href="{:url('form/showfield',['fid'=>$fid])}";
+                            });
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }
+                    }
+                });
+            });
+        })
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>{hs:seo name='seo_title'/}</title>
+    <meta name="keywords" content="{hs:seo name='seo_keywords'/}">
+    <meta name="description" content="{hs:seo name='seo_description'/}">
+    <link rel="stylesheet" type="text/css" href="__INDEX__/pc/css/swiper.css" />
+    <link rel="stylesheet" type="text/css" href="__INDEX__/pc/css/style.css" />
+    <script src="__INDEX__/pc/js/swiper.js"></script>
+
+</head>
+<body>
+<!--头部-->
+{include file="pc/public_header"}
+<!--banner-->
+<div class="banner">
+    <div class="swiper-wrapper">
+        {hs:banner type="1" limit="10"}
+        <div class="swiper-slide">
+            <a href="{$banner.url}"><img src="{$banner.pic}" alt=""></a>
+        </div>
+        {/hs:banner}
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Add Pagination -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--底部-->
+{include file="pc/public_footer"}
+<script src="__INDEX__/js/index.js"></script>
+</body>
+</html>

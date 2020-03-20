@@ -1,0 +1,110 @@
+{extend name="index/base" /}
+
+{block name="main"}
+<div class="hs_pro_con">
+    <div class="neiye_pro">
+        <div class="swiper-wrapper">
+            <?php $listp = explode("|||", $content["content"]["piclist"]);array_pop($listp); ?>
+            <div class="swiper-slide"><div><img src="{$content.pic}" alt=""></div></div>
+            {volist name="listp" id="listp"}
+            <div class="swiper-slide"><div><img src="{$listp}" alt=""></div></div>
+            {/volist}
+        </div>
+        <!-- Add Arrows -->
+        <div class="swiper-button-next swiper-button-nextnpro"></div>
+        <div class="swiper-button-prev swiper-button-prevnpro"></div>
+    </div>
+    <div class="right">
+        <div>{$content.title}</div>
+        <div>{$content.content.desc}</div>
+        <div>相关内容</div>
+        <div>
+            {if($content.prev.title)}
+            <a href="{$content.prev.url}"><span>{$content.prev.title}</span></a>
+            {/if}
+            {if($content.next.title)}
+            <a href="{$content.next.url}"><span>{$content.next.title}</span></a>
+            {/if}
+            <div style="clear: both"></div>
+        </div>
+        <div>联系我们</div>
+        <div>
+            <img src="{hs:debris title='ewm' /}" alt="">
+            <div class="wz">扫一扫<br>立即咨询</div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<!--d缩略-->
+<div class="suolue_box">
+    <div class="swiper-wrapper">
+        <?php $listp = explode("|||", $content["content"]["piclist"]);array_pop($listp); ?>
+        <div class="swiper-slide"><img src="{$content.pic}" alt=""></div>
+        {volist name="listp" id="listp"}
+        <div class="swiper-slide"><img src="{$listp}" alt=""></div>
+        {/volist}
+    </div>
+</div>
+<!--详情-->
+<div class="pro_info">
+    <div class="info_t">
+        <span>详情信息</span>
+    </div>
+    <div id="hs_contents">
+        {$content.content.content}
+    </div>
+</div>
+<!--翻页-->
+<div class="hs_fy_con">
+    {if($content.prev.title)}
+    <a href="{$content.prev.url}"><span>{$content.prev.title}</span></a>
+    {else}
+    <a><span>没有了...</span></a>
+    {/if}
+
+    {if($content.next.title)}
+    <a href="{$content.next.url}"><span>{$content.next.title}</span></a>
+    {else}
+    <a><span>没有了...</span></a>
+    {/if}
+    <div style="clear: both"></div>
+</div>
+<!--在线留言-->
+<div class="hs_zxly">
+    <div class="hs_t">在线留言</div>
+    <form action="/form/1" method="post">
+        <input type="hidden" name="__token__" value="{$Request.token}" />
+        <div class="hs_input">
+            <input type="text" name="name" value="" placeholder="请输入姓名">
+            <input type="number" name="phone" value="" placeholder="请输入电话">
+        </div>
+        <div class="hs_yzm">
+            <textarea name="content" placeholder="留言内容"></textarea>
+            <div>
+                <input type="text" name="captcha" placeholder="验证码"><img src="{:captcha_src()}" onclick="this.src=this.src" alt="">
+            </div>
+        </div>
+        <input type="submit" class="hs_submit" value="立即提交"><br>
+    </form>
+</div>
+<script>
+    var suoluie = new Swiper('.suolue_box', {
+        spaceBetween: 15,
+        slidesPerView: "auto",
+        freeMode: true,
+        watchSlidesVisibility: true,
+        watchSlidesProgress: true,
+    });
+    var gnei = new Swiper('.neiye_pro', {
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        thumbs: {
+            swiper: suoluie
+        }
+    });
+</script>
+{/block}

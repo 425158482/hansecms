@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">管理员分配</blockquote>
+        <div class="btn_tj">
+            <button class="layui-btn layui-btn-sm adduser"><i class="layui-icon"></i>添加管理</button>
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="100">
+                    <col width="200">
+                    <col width="150">
+                    <col>
+                    <col width="120">
+                    <col width="200">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>头像</th>
+                    <th>管理员</th>
+                    <th>账号</th>
+                    <th>类型</th>
+                    <th>最近IP</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="admin_user" id="admin_user"}
+                <tr>
+                    <td><img style="width: 50px;height: 50px;border-radius: 50%" src="{$admin_user.pic}" alt=""></td>
+                    <td>{$admin_user.name}</td>
+                    <td>{$admin_user.username}</td>
+                    <td>{if($admin_user.type==1)}超级管理员{else}普通管理员{/if}</td>
+                    <td>
+                        {$admin_user.ip}
+                    </td>
+                    <td>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-normal grade"  data-id="{:url('user/grade',['id'=>$admin_user.id])}">权限</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-normal edit"  data-id="{:url('user/edit',['id'=>$admin_user.id])}">修改</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-normal delete" data-id="{$admin_user.id}">删除</button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        $(document).on('blur','.sort', function () {
+            var id = $(this).attr('data-id');
+            var obs = $(this);
+            $.ajax({
+                type: "POST",
+                url: '{:url("models/editsort",["mid"=>2])}',
+                data:{'id':id,'sort':obs.val()},
+                success: function(msg){
+                    if(msg){
+                        layer.msg('排序已更改', {icon: 1});
+                    }else{
+                        layer.msg('排序更改失败', {icon: 5});
+                    }
+                }
+            });
+        });
+        //添加
+        $(".adduser").click(function () {
+            layer.open({
+                type: 2,
+                title:"添加管理员",
+                area: ['600px', '500px'],
+                shadeClose: true, //点击遮罩关闭
+                content: '{:url("user/adduser")}'
+            });
+        })
+        //编辑
+        $(".edit").click(function () {
+            var id = $(this).attr('data-id');
+            layer.open({
+                type: 2,
+                title:"修改管理员",
+                area: ['600px', '500px'],
+                shadeClose: true, //点击遮罩关闭
+                content: id
+            });
+        })
+        //权限
+        $(".grade").click(function () {
+            var id = $(this).attr('data-id');
+            layer.open({
+                type: 2,
+                title:"权限分配",
+                area: ['600px', '500px'],
+                shadeClose: true, //点击遮罩关闭
+                content: id
+            });
+        })
+        //删除
+        $(document).on('click','.delete', function () {
+            var id = $(this).attr('data-id');
+            layer.confirm('确定要删除吗？', {
+                btn: ['必须的','忍一手'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("user/delete")}',
+                    data:{'id':id},
+                    success: function(msg){
+                        if(msg==1){
+                            layer.msg('删除成功', {icon: 1,time:1000}, function() {
+                                location.href="{:url('user/index')}";
+                            });
+                            location.href;
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }else{
+                            layer.msg(msg, {icon: 5});
+                        }
+                    }
+                });
+            });
+        })
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">修改菜单</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <input type="hidden" name="__token__" value="{$Request.token}" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">父级菜单</label>
+                <div class="layui-input-block">
+                    <select name="pid" lay-filter="aihao">
+                        <option value="0">默认顶级</option>
+                        {volist name="adminmenu" id="adminmenu"}
+                        <option value="{$adminmenu.id}" {if($adminmenu.id==$menus.pid)} selected="" {/if}>{$adminmenu.title}</option>
+                        {volist name="adminmenusub" id="adminmenusubs"}
+                        {if($adminmenusubs.pid==$adminmenu.id)}
+                        <option value="{$adminmenusubs.id}" {if($adminmenusubs.id==$menus.pid)} selected="" {/if}>&nbsp;&nbsp;&nbsp;&nbsp;|--{$adminmenusubs.title}</option>
+                        {/if}
+                        {/volist}
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">菜单名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="title" value="{$menus.title}" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">url地址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="url" lay-verify="url" value="{$menus.url}" autocomplete="off" placeholder="/模块/控制器/方法" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">顶级栏目可用@ , 其他栏目 = /模块/控制器/方法</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">layui图标</label>
+                <div class="layui-input-block">
+                    <input type="text" name="ico" autocomplete="off" value="{$menus.ico}" placeholder="layui-icon-star-fill" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-block">
+                    <input type="number" name="sort" lay-verify="sort" autocomplete="off" value="{$menus.sort}" placeholder="序号默认0" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">菜单状态</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" {if ($menus.state)}checked=""{/if} value="1" name="state" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        //自定义验证规则
+        form.verify({
+            title: function(value){
+                if(value.length < 1){
+                    return '标题总得写点什么吧';
+                }
+            },
+            url: function(value){
+                if(value.length < 1){
+                    return '地址总应该写吧';
+                }
+            },
+            sort: function(value){
+                if(value < 0){
+                    return '这东西不应该是负数吧';
+                }
+            }
+        });
+        form.on('submit(menu)', function(data){
+            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+            data.id = {$menus.id};
+            jquery.ajax({
+                type:"post",
+                url :"{:url('menu/update')}",
+                data:data,
+                success:function (msg) {
+                    if(msg==1){
+                        layer.alert('保存成功!', {
+                            skin: 'layui-layer-lan' //样式类名
+                            ,closeBtn: 0
+                        }, function() {
+                            location.href="{:url('menu/index')}";
+                        })
+                    }else if(msg==2){
+                        layer.msg('验证器不通过!', {icon: 5});
+                    }else if(msg==0){
+                        layer.msg('数据保存失败!', {icon: 5});
+                    }else{
+                        layer.msg('系统繁忙!', {icon: 5});
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+
+        });
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

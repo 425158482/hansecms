@@ -1,0 +1,17 @@
+{extend name="wap/base" /}
+
+{block name="main"}
+<div class="list_zx">
+    {hs:list nid="$navid" order="create_Time desc" limit="" reco="0" pagesize="10"}
+    <a href="{$list.url}">
+        <div class="left"><img src="{$list.pic}" alt=""></div>
+        <div class="right">
+            <div>{$list.title}</div>
+            <div>{$list.content.desc}</div>
+        </div>
+        <div style="clear: both"></div>
+    </a>
+    {/hs:list}
+    {$pages}
+</div>
+{/block}

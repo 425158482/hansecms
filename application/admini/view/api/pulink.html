@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">百度链接提交</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <fieldset class="layui-elem-field">
+                <legend>所有链接</legend>
+                <div class="layui-field-box">
+                    {volist id="links" name="links"}
+                    <a href="{$links}" target="_blank" style="margin-left: 30px;padding: 10px 0;display: inline-block">{$links}</a>
+                    {/volist}
+                </div>
+            </fieldset>
+            <div class="layui-form-item">
+                总计 : {$count}条链接
+            </div>
+            <div class="layui-form-item">
+                <a class="layui-btn layui-btn-normal layui-btn-sm http">全部推送</a>
+                <a class="layui-btn layui-btn-normal layui-btn-sm pzsm"style="margin-left: 100px">配置说明</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['table','jquery','form'], function() {
+        var table = layui.table
+            , jquery = layui.jquery
+            , form = layui.form;
+        $(".http").click(function () {
+            layer.confirm('真的要全部提交么?', function (index) {
+                jquery.ajax({
+                    url: "{:url('api/puhttp')}",
+                    success: function (msg) {
+                        if (msg.success) {
+                            layer.close(index);
+                            layer.msg('成功推送了'+msg.success+'条链接!', {icon: 1});
+                        }else{
+                            layer.msg('谁送失败,检查配置!', {icon: 5});
+                        }
+
+                    }
+                })
+            });
+            return false;
+        })
+        $(".pzsm").click(function () {
+            layer.alert('1 --> 在[常用菜单/基本配置]填写网站域名<br>2 --> 在[扩展管理/API管理]填写准入密钥<br>注 : 填写域名必须与百度资源平台一致<br>注 : 填写准入密钥必须与百度资源平台提供的一致<br>', {
+                skin: 'layui-layer-molv' //样式类名
+                ,closeBtn: 0
+            })
+        })
+
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

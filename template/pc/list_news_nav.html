@@ -1,0 +1,23 @@
+{extend name="index/base2" /}
+
+{block name="main"}
+<div class="news_list_nav">
+    {hs:navsub pid="$topnav" limit="100" order="id asc"}
+    <div class="newsa">
+        <a href="{$navsub.url}">{$navsub.name} <span>查看更多+</span></a>
+    </div>
+    <div class="xingwen_li">
+        {hs:list nid="$navsub['id']" order="create_Time desc" limit="4" reco="0" pagesize="0"}
+        <div class="swiper-slide animated">
+            <a href="{$list.url}">
+                <div><img src="{$list.pic}" alt=""></div>
+                <div>{$list.title}</div>
+                <div>{$list.create_Time|date="Y-m-d",###}</div>
+            </a>
+        </div>
+        {/hs:list}
+        <div style="clear:both;"></div>
+    </div>
+    {/hs:navsub}
+</div>
+{/block}

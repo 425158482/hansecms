@@ -1,0 +1,38 @@
+{extend name="pc/base" /}
+
+{block name="main"}
+<div class="hs_news_view">
+    <h1>{$content.title}</h1>
+    <div class="news_info">
+        <span>所属栏目 : {hs:navcon id="$content['pid']"}{$navcon.name}{/hs:navcon}</span>
+        <span>发布时间 : {$content.create_Time|date="Y-m-d",###}</span>
+        <span>作者 : {hs:config name='seo_title'/}</span>
+        <span>点击量 : {$content.click}</span>
+        <span class="bdsharebuttonbox">
+            <a href="#" class="bds_more" data-cmd="more"></a> <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a> <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        </span>
+        <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+    </div>
+    <!--详情-->
+    <div class="pro_info">
+        <div id="hs_contents">
+            {$content.content.content}
+        </div>
+    </div>
+</div>
+<!--翻页-->
+<div class="hs_fy_con">
+    {if($content.prev.title)}
+    <a href="{$content.prev.url}"><span>{$content.prev.title}</span></a>
+    {else}
+    <a><span>没有了...</span></a>
+    {/if}
+
+    {if($content.next.title)}
+    <a href="{$content.next.url}"><span>{$content.next.title}</span></a>
+    {else}
+    <a><span>没有了...</span></a>
+    {/if}
+    <div style="clear: both"></div>
+</div>
+{/block}

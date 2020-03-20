@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+    <script src="https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js"></script>
+</head>
+<body>
+<!--头部栏目-->
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">
+            欢迎 : <a href="{:url('index/editadmin')}">{$Think.Session.admini.name}</a> IP : {$Think.Session.admini.ip} 时间 : {$Think.Session.admini.create_time|date="Y-m-d H:i:s",###}
+        </blockquote>
+        <div class="layui-row">
+            {volist name="inav" id="inav"}
+            <div class="layui-col-xs3" style="text-align: center">
+                <div class="layui-col-xs10 ad_in_na">
+                    {if $inav.model==4}
+                    <a href="{:url('nav/edit',['id'=>$inav.id])}">{$inav.name}</a>
+                    {else}
+                    <a href="{:url('content/content',['id'=>$inav.id])}">{$inav.name}</a>
+                    {/if}
+                </div>
+            </div>
+            {/volist}
+        </div>
+        <blockquote class="layui-elem-quote" style="margin-top: 20px">
+            访问统计
+        </blockquote>
+        <div id="mains" style="height:400px;"></div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('mains'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '统计走势图'
+        },
+        tooltip: {},
+        xAxis: {
+            data: [{$time}]
+        },
+        yAxis: {},
+        series: [{
+            name: '访问人数',
+            type: 'bar',
+            data: [{$num}]
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+
+
+
+</body>
+</html>

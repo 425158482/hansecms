@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">自动替换</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">自动替换</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" {if($witty==1)}checked=""{/if} name="witty" value="1" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                </div>
+                <div class="layui-form-mid layui-word-aux">文本自动替换--开启才能生效 ! <span style="color: red">注 : 录取数据时替换</span></div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">替换内容</label>
+                <div class="layui-input-inline">
+                    <textarea placeholder="请输入标语" name="witty_con" class="layui-textarea" style="height: 300px">{:config('site.witty_con')}</textarea>
+                </div>
+                <div class="layui-form-mid layui-word-aux">内容以 " | " 分开, 换行分词</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-input-inline"></label>
+                <div class="layui-input-block">
+                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form','upload', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , upload = layui.upload
+            , layedit = layui.layedit;
+        //自定义验证规则
+        form.on('submit(menu)', function(data){
+            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+            jquery.ajax({
+                type:"post",
+                url :"{:url('witty/save')}",
+                data:data,
+                success:function (msg) {
+                    if(msg==1){
+                        layer.msg('更新成功!', {icon: 1});
+                    }else{
+                        layer.msg('系统繁忙!', {icon: 5});
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

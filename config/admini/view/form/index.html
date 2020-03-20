@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">表单管理</blockquote>
+        <div class="btn_tj">
+            <a href="{:url('form/add')}" class="layui-btn layui-btn-sm"><i class="layui-icon"></i>添加表单</a>
+            <button type="button" class="layui-btn layui-btn-sm ystz">邮件通知</button>
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="150">
+                    <col width="150">
+                    <col>
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="140">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>表单名称</th>
+                    <th>数据表名</th>
+                    <th>描述</th>
+                    <th>未读/已读</th>
+                    <th>调用代码</th>
+                    <th>数据字段</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="formlist" id="formlist"}
+                <tr>
+                    <td>{$formlist.id}</td>
+                    <td>{$formlist.name}</td>
+                    <td>{$formlist.bname}</td>
+                    <td>{$formlist.con}</td>
+                    <td style="text-align: center"><a href="{:url('form/content',['fid'=>$formlist.id])}" class="layui-btn layui-btn-sm layui-btn-normal">{$formlist.weidu} / {$formlist.yidu}</a></td>
+                    <td>
+                        <a href="{:url('form/show',['id'=>$formlist.id])}" class="layui-btn layui-btn-sm layui-btn-normal">查看代码</a>
+                    </td>
+                    <td>
+                        <a href="{:url('form/showfield',['fid'=>$formlist.id])}" class="layui-btn layui-btn-sm layui-btn-normal">字段管理({$formlist.count})</a>
+                    </td>
+                    <td>
+                        <a href="{:url('form/edittable',['id'=>$formlist.id])}" type="button" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="{$formlist.id}"><i class="layui-icon"></i></button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        $(document).on('blur','.sort', function () {
+            var id = $(this).attr('data-id');
+            var obs = $(this);
+            $.ajax({
+                type: "POST",
+                url: '{:url("models/editsort")}',
+                data:{'id':id,'sort':obs.val()},
+                success: function(msg){
+                    if(msg){
+                        layer.msg('排序已更改', {icon: 1});
+                    }else{
+                        layer.msg('排序更改失败', {icon: 5});
+                    }
+                }
+            });
+        });
+
+        $(".ystz").click(function () {
+                layer.open({
+                type: 2,
+                title: '配置QQ邮件参数',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['500px', '600px'],
+                content: '{:url("form/mail")}'
+            });
+
+        })
+
+
+        $(document).on('click','.delete', function () {
+            var id = $(this).attr('data-id');
+            layer.confirm('确定要删除吗？', {
+                btn: ['必须的','忍一手'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("form/deletetable")}',
+                    data:{'id':id},
+                    success: function(msg){
+                        console.log(msg)
+                        if(msg==1){
+                            layer.msg('删除成功', {icon: 1,time:1000}, function() {
+                                location.href="{:url('form/index')}";
+                            });
+                            location.href;
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }else{
+                            layer.msg('系统繁忙', {icon: 5});
+                        }
+                    }
+                });
+            });
+        })
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

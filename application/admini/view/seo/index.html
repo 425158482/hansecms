@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">SEO设置</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <fieldset class="layui-elem-field seosite">
+                <legend>常规配置</legend>
+                <div class="layui-field-box">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">常规标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="seo_title" lay-verify="" value="{:config('site.seo_title')}" autocomplete="off" placeholder="常规标题" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">常规关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="seo_keywords" lay-verify="" value="{:config('site.seo_keywords')}" autocomplete="off" placeholder="常规关键词" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">常规摘要</label>
+                        <div class="layui-input-inline">
+                            <textarea placeholder="常规摘要" name="seo_description" class="layui-textarea">{:config('site.seo_description')}</textarea>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="layui-elem-field seosite">
+                <legend>分站配置</legend>
+                <div class="layui-field-box">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分站标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="f_seo_title" lay-verify="" value="{:config('site.f_seo_title')}" autocomplete="off" placeholder="分站标题" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分站关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="f_seo_keywords" lay-verify="" value="{:config('site.f_seo_keywords')}" autocomplete="off" placeholder="分站关键词" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分站描述</label>
+                        <div class="layui-input-inline">
+                            <textarea placeholder="分站描述" name="f_seo_description" class="layui-textarea">{:config('site.f_seo_description')}</textarea>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="layui-form-item">
+                <label class="layui-input-inline"></label>
+                <div class="layui-input-block">
+                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form','upload', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , upload = layui.upload
+            , layedit = layui.layedit;
+        //自定义验证规则
+        form.on('submit(menu)', function(data){
+            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+            jquery.ajax({
+                type:"post",
+                url :"{:url('seo/upfiles')}",
+                data:data,
+                success:function (msg) {
+                    console.log(msg)
+                    if(msg==1){
+                        layer.msg('更新成功!', {icon: 1});
+                    }else{
+                        layer.msg('系统繁忙!', {icon: 5});
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#logoup'
+            , url: '{:url("uploads/uploads_img")}'
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#logo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code == 1) {
+                    $("#site_logo").val(res.img_url)
+                    layer.msg('上传成功!', {icon: 1});
+                }
+                if(res.code == 0){
+                    layer.msg(res.error, {icon: 5});
+                }
+
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

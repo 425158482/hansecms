@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">菜单管理</blockquote>
+        <div class="btn_tj">
+            <a href="{:url('menu/add')}" class="layui-btn layui-btn-sm"><i class="layui-icon"></i>添加</a>
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="200">
+                    <col>
+                    <col width="200">
+                    <col width="100">
+                    <col width="100">
+                    <col width="150">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>栏目名称</th>
+                    <th>url</th>
+                    <th>添加时间</th>
+                    <th>排序</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="adminmenu" id="adminmenu"}<!--一级栏目-->
+                <tr>
+                    <td>{$adminmenu.id}</td>
+                    <td>{if ($adminmenu.ico)}<i class="tabi layui-icon {$adminmenu.ico}"></i>{/if}{$adminmenu.title}</td>
+                    <td align="center">{$adminmenu.url}</td>
+                    <td>{$adminmenu.add_time|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <input type="text" class="sort" data-id="{$adminmenu.id}" value="{$adminmenu.sort}">
+                    </td>
+                    <td>
+                        <input type="checkbox" {if ($adminmenu.state)}checked=""{/if} name="state" data-id="{$adminmenu.id}" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                    </td>
+                    <td>
+                        <a href="{:url('menu/edit',['id'=>$adminmenu.id])}" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="{$adminmenu.id}"><i class="layui-icon"></i></button>
+                    </td>
+                </tr>
+                {volist name="adminmenusub" id="adminmenusub1"}<!--二级栏目-->
+                {if ($adminmenusub1.pid == $adminmenu.id)}
+                <tr>
+                    <td>{$adminmenusub1.id}</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--{if ($adminmenusub1.ico)}<i class="tabi layui-icon {$adminmenusub1.ico}"></i>{/if}{$adminmenusub1.title}</td>
+                    <td align="center">{$adminmenusub1.url}</td>
+                    <td>{$adminmenusub1.add_time|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <input type="text" class="sort" data-id="{$adminmenusub1.id}" value="{$adminmenusub1.sort}">
+                    </td>
+                    <td>
+                        <input type="checkbox" {if ($adminmenusub1.state)}checked=""{/if} name="state" data-id="{$adminmenusub1.id}" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                    </td>
+                    <td>
+                        <a href="{:url('menu/edit',['id'=>$adminmenusub1.id])}" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="{$adminmenusub1.id}"><i class="layui-icon"></i></button>
+                    </td>
+                </tr>
+                {volist name="adminmenusub" id="adminmenusub3"}<!--三级栏目-->
+                {if ($adminmenusub1.id == $adminmenusub3.pid)}
+                <tr>
+                    <td>{$adminmenusub3.id}</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--{if ($adminmenusub3.ico)}<i class="tabi layui-icon {$adminmenusub3.ico}"></i>{/if}{$adminmenusub3.title}</td>
+                    <td align="center">{$adminmenusub3.url}</td>
+                    <td>{$adminmenusub3.add_time|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <input type="text" class="sort" data-id="{$adminmenusub3.id}" value="{$adminmenusub3.sort}">
+                    </td>
+                    <td>
+                        <input type="checkbox" {if ($adminmenusub3.state)}checked=""{/if} name="state" data-id="{$adminmenusub3.id}" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                    </td>
+                    <td>
+                        <a href="{:url('menu/edit',['id'=>$adminmenusub3.id])}" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="{$adminmenusub3.id}"><i class="layui-icon"></i></button>
+                    </td>
+                </tr>
+                {/if}
+                {/volist}
+                {/if}
+                {/volist}
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        $(document).on('blur','.sort', function () {
+            var id = $(this).attr('data-id');
+            var obs = $(this);
+            $.ajax({
+                type: "POST",
+                url: '{:url("menu/editsort")}',
+                data:{'id':id,'sort':obs.val()},
+                success: function(msg){
+                    if(msg){
+                        layer.msg('排序已更改', {icon: 1});
+                    }else{
+                        layer.msg('排序更改失败', {icon: 5});
+                    }
+                }
+            });
+        });
+        $(document).on('click','.delete', function () {
+            var id = $(this).attr('data-id');
+            layer.confirm('确定要删除吗？', {
+                btn: ['必须的','忍一手'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("menu/delete")}',
+                    data:{'id':id},
+                    success: function(msg){
+                        if(msg==1){
+                            layer.msg('删除成功', {icon: 1,time:1000}, function() {
+                                location.href="{:url('menu/index')}";
+                            });
+                            location.href;
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }else if(msg==2){
+                            layer.msg('请先删除子菜单', {icon: 5});
+                        }else{
+                            layer.msg('系统繁忙', {icon: 5});
+                        }
+                    }
+                });
+            });
+        })
+        form.on('switch(switchTest)', function(data){
+            var state = this.checked ? 1 :0;
+            var id = $(this).attr('data-id');
+            $.ajax({
+                type: "POST",
+                url: '{:url("menu/editstate")}',
+                data:{'id':id,'state':state},
+                success: function(msg){
+                    if(msg){
+                        if(state){
+                            layer.msg('栏目正常显示', {icon: 1});
+                        }else{
+                            layer.msg('栏目暂停显示', {icon: 5});
+                        }
+                    }else{
+                        layer.msg('状态更新失败', {icon: 5});
+                    }
+                }
+            });
+        });
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

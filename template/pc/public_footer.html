@@ -1,0 +1,37 @@
+<!--底部-->
+<div class="foot">
+    <div>
+        <div class="left">
+            <div class="ft"><span>联系我们</span>Contact us</div>
+            <div class="kuan"></div>
+            <div class="con">
+                <p>{hs:debris title="address" /}</p>
+                <p>座机 : {hs:debris title="zj" /}&nbsp;&nbsp;&nbsp;&nbsp; Q &nbsp;Q : {hs:debris title="qq" /}</p>
+                <p>手机 : {hs:debris title="phone" /}&nbsp;&nbsp;&nbsp;&nbsp;邮箱 : {hs:debris title="qq" /}@qq.com</p>
+            </div>
+        </div>
+        <div class="left">
+            <div class="ft"><span>快捷导航</span>Shortcut navigation</div>
+            <div class="fnav">
+                <a href="/" title="泓呈首页">泓呈首页</a>
+                {hs:nav limit="10"}
+                <a href="{$nav.url}" title="{$nav.name}">{$nav.name}</a>
+                {/hs:nav}
+            </div>
+        </div>
+        <div class="left">
+            <div class="ft"><span>关注我们</span>Pay attention to us</div>
+            <div class="ewm">
+                <img src="{hs:debris title='wx' /}" alt="">
+                <div>微信扫一扫关注我们</div>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+<!--底部版权-->
+<div class="bq">
+    <div>
+        {hs:debris title='bq' /}
+    </div>
+</div>

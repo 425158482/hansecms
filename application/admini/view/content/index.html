@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+<!--头部栏目-->
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="content_box">
+        <div class="admin_left_nav">
+            {volist name="indexnav" id="indexnav"}
+            {if($indexnav.model==4)}
+            <a href="{:url('nav/edit',['id'=>$indexnav.id])}" class="nav" style="color: red">{$indexnav.name}</a>
+            {else}
+            <a href="{:url('content/content',['id'=>$indexnav.id])}" class="nav">{$indexnav.name}</a>
+            {/if}
+            {/volist}
+        </div>
+        <div class="admin_content">
+            {volist name="inav" id="inav"}
+            <div class="layui-col-xs3" style="text-align: center">
+                <div class="layui-col-xs10 ad_in_na">
+                    {if $inav.model==4}
+                    <a href="{:url('nav/edit',['id'=>$inav.id])}">{$inav.name}</a>
+                    {else}
+                    <a href="{:url('content/content',['id'=>$inav.id])}">{$inav.name}</a>
+                    {/if}
+                </div>
+            </div>
+            {/volist}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

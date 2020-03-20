@@ -1,0 +1,29 @@
+{extend name="index/base" /}
+
+{block name="main"}
+<div class="n_product">
+    {hs:list nid="$navid" order="create_Time desc" limit="" reco="0" pagesize="12"}
+    <div class="left">
+        <a href="{$list.url}">
+            <div><img src="{$list.pic}" alt="{$list.title}"></div>
+            <div>
+                <span>{$list.title}</span>
+                <span>VIEW</span>
+                <div style="clear: both"></div>
+            </div>
+            <div class="p_dis animated rotateInDownLeft">
+                <div>{$list.title}</div>
+                <div>{$list.content.desc}</div>
+                <div>详情</div>
+            </div>
+        </a>
+    </div>
+    {/hs:list}
+    <div style="clear: both"></div>
+</div>
+
+<div  id="articeBottom">
+    {$pages}
+</div>
+{/block}
+

@@ -1,0 +1,21 @@
+{extend name="index/base" /}
+
+{block name="main"}
+<div class="show_pic">
+    <div class="show_pic_tit">{$content.title}</div>
+    <div class="show_pic_con">
+        <div>详情内容</div>
+        <div>{$content.content.content}</div>
+    </div>
+    <script>
+        var swiper = new Swiper('.pic_pic_s', {
+            autoHeight: true, //enable auto height
+            spaceBetween: 20,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+    </script>
+</div>
+{/block}

@@ -1,0 +1,32 @@
+{extend name="index/base" /}
+
+{block name="main"}
+<div class="show_pic">
+    <div class="show_pic_tit">{$content.title}</div>
+    <div class="pic_pic_s">
+        <div class="swiper-wrapper">
+            <?php $listp = explode("|||", $content["content"]["piclist"]);array_pop($listp); ?>
+            <div class="swiper-slide"><img src="{$content.pic}" alt=""></div>
+            {volist name="listp" id="listp"}
+            <div class="swiper-slide"><img src="{$listp}" alt=""></div>
+            {/volist}
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="show_pic_con">
+        <div>详情内容</div>
+        <div>{$content.content.content}</div>
+    </div>
+    <script>
+        var swiper = new Swiper('.pic_pic_s', {
+            autoHeight: true, //enable auto height
+            spaceBetween: 20,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+    </script>
+</div>
+{/block}

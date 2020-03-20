@@ -1,0 +1,55 @@
+{extend name="index/base" /}
+
+{block name="main"}
+
+<style>
+.zxly{
+    width: 500px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: auto;
+    padding: 30px 0;
+    margin-top: 30px;
+}
+.zxly div{
+    text-align: center;
+}
+.zxly div>input{
+    width: 80%;
+    height: 35px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-indent: 1em;
+}
+textarea{
+    width: 80%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    height: 50px;
+    text-indent: 1em;
+}
+</style>
+<div class="zxly">
+    <h2 style="text-align: center">在线留言</h2>
+    <form action="/wap/form/1" method="post">
+        <input type="hidden" name="__token__" value="{$Request.token}" />
+        <div>
+        <input type="text" name="name" value="" placeholder="姓名">
+        </div>
+        <div>
+        <input type="number" name="phone" value=""  placeholder="电话">
+        </div>
+        <div>
+        <textarea name="content"  placeholder="内容"></textarea>
+        </div>
+        <div>
+            <input type="text"  placeholder="验证码" name="captcha" style="width: 45%;display: inline-block">
+            <img src="{:captcha_src()}" onclick="this.src=this.src" alt=""  style="width: 35%;height: 35px;display: inline-block">
+        </div>
+        <div>
+        <input type="submit" style="background: #1C8F44;color: #fff"></div>
+    </form>
+</div>
+{/block}

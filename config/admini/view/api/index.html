@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">API管理</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>百度统计</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <label class="layui-form-label">统计地址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="tj_url" lay-verify="" value="{:config('site.tj_url')}" autocomplete="off" placeholder="" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">百度统计地址</div>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>链接推送</legend>
+            </fieldset>
+            <blockquote class="layui-elem-quote">
+                注 : 推送规则<br>
+                手动推送 : 请在->链接推送处点击全部推送<br>
+                主动推送 : 添加内容时自动推送, 隐藏的栏目内容不会进行推送(需要开启自动推送)<br>
+                <span style="color: red">以上推送都必须为准入密匙正确才会推送</span>
+            </blockquote>
+            <div class="layui-form-item">
+                <label class="layui-form-label">自动推送</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" {if($zdts)}checked=""{/if} name="zdts" value="1" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+                </div>
+                <div class="layui-form-mid layui-word-aux">发布内容时自动推送 <span style="color: red">注 : 准入密匙正确时生效</span></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">准入密钥</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="baidu_ts" lay-verify="" value="{:config('site.baidu_ts')}" autocomplete="off" placeholder="" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">百度搜索资源平台准入密匙</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-input-inline"></label>
+                <div class="layui-input-block">
+                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        //自定义验证规则
+        form.on('submit(menu)', function(data){
+            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+            jquery.ajax({
+                type:"post",
+                url :"{:url('api/upfiles')}",
+                data:data,
+                success:function (msg) {
+                    if(msg==1){
+                        layer.msg('更新成功!', {icon: 1});
+                    }else{
+                        layer.msg('系统繁忙!', {icon: 5});
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

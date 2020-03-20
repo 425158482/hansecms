@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>{hs:seo name='seo_title'/}</title>
+    <meta name="keywords" content="{hs:seo name='seo_keywords'/}">
+    <meta name="description" content="{hs:seo name='seo_description'/}">
+    <meta name="viewport" content="width=640,user-scalable=no">
+    <link rel="stylesheet" href="__INDEX__/wap/css/swiper.css">
+    <link rel="stylesheet" href="__INDEX__/wap/css/style.css">
+    <script type="text/javascript" src="__INDEX__/wap/js/swiper.js"></script>
+    <script type="text/javascript" src="__INDEX__/wap/js/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<!--top-->
+<div class="top">
+    <div class="left">
+        <div class="logo">
+            <img src="{hs:config name='site_logo'/}" alt="">
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="right">
+        <div id="men_nav"></div>
+        <div class="ds_men">
+            {hs:nav limit="10"}
+            <a href="{$nav.url}" target="">{$nav.name}</a>
+            {/hs:nav}
+        </div>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<script>
+    $(function () {
+        $("#men_nav").click(function () {
+            $(".ds_men").toggle(200)
+        })
+    })
+</script>
+<!--banner-->
+<div class="banner">
+    <div class="swiper-wrapper">
+        {hs:banner type="2" limit="10"}
+        <div class="swiper-slide">
+            <a href="{$banner.url}">
+                <img src="{$banner.pic}" width="640" height="350" alt="">
+            </a>
+        </div>
+        {/hs:banner}
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+</div>
+<!--公司简介-->
+<div class="i_about">
+    <div class="t">
+        <div class="left">PET HOSPITAL</div>
+        <div class="left">
+            <div>唯爱动物医馆 </div>
+            <div>Animal hospital</div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    <div class="con">
+        <div>{hs:navcon id="1"}{$navcon.desc}{/hs:navcon}</div>
+        <div>{hs:navcon id="1"}<a href="{$navcon.url}">更多></a>{/hs:navcon}</div>
+    </div>
+</div>
+<!--康复故事-->
+<div class="kfgs">
+    <div class="ttt">
+        <div>Rehabilitation story</div>
+        <div>康复故事</div>
+        <div>唯爱动物医馆24小时为您的毛孩子提供咨询服务</div>
+    </div>
+    <div class="kf_box">
+        <div class="swiper-wrapper">
+            {hs:list nid="4" order="create_Time desc" limit="10" reco="0" pagesize=""}
+            <div class="swiper-slide">
+                <a href="{$list.url}">
+                    <div><img src="{$list.pic}" alt=""></div>
+                    <div>名字 : {$list.content.name} &nbsp;&nbsp;&nbsp;&nbsp; 年龄 : {$list.content.age}</div>
+                    <div>{$list.content.desc}</div>
+                </a>
+            </div>
+            {/hs:list}
+        </div>
+    </div>
+</div>
+<!--服务项目-->
+<div class="fwxm">
+    <div class="ttt" style="text-align: right;margin-right: 20px">
+        <div>Service Items</div>
+        <div>服务项目</div>
+        <div>唯爱动物医馆24小时为您的毛孩子提供咨询服务</div>
+    </div>
+    <div class="con">
+        {hs:navsub pid="2" limit="5" order="id asc"}
+        <a href="{$navsub.url}" class="left">
+            <img src="__INDEX__/images/fw{$k+1}.png" alt="{$navsub.name}">
+            <div>{$navsub.name}</div>
+        </a>
+        {/hs:navsub}
+        <div style="clear: both"></div>
+    </div>
+</div>
+<!--医疗团队-->
+<div class="yltd">
+    <div class="ttt">
+        <div>Medical team</div>
+        <div>医疗团队</div>
+        <div>唯爱动物医馆24小时为您的毛孩子提供咨询服务</div>
+    </div>
+    <div class="td_box">
+        <div class="swiper-wrapper">
+            {hs:list nid="3" order="create_Time desc" limit="10" reco="0" pagesize=""}
+            <div class="swiper-slide">
+                <a href="{$list.url}">
+                    <div><img src="{$list.pic}" alt="{$list.title}"></div>
+                    <div>{$list.title}</div>
+                    <div>{$list.content.desc}</div>
+                </a>
+            </div>
+            {/hs:list}
+        </div>
+    </div>
+</div>
+<!--新闻中心-->
+<div class="i_news">
+    <div class="ttt">
+        <div>weiai information</div>
+        <div>唯爱资讯</div>
+        <div>唯爱动物医馆24小时为您的毛孩子提供咨询服务</div>
+    </div>
+    <div class="con">
+        {hs:list nid="5" order="create_Time desc" limit="4" reco="0" pagesize=""}
+        <a href="{$list.url}">
+            <div>
+                <div class="left">{$list.title}</div>
+                <div class="right">{$list.create_Time|date="Y-m-d",###}</div>
+                <div style="clear: both"></div>
+            </div>
+            <div>{$list.content.desc}</div>
+        </a>
+        {/hs:list}
+    </div>
+</div>
+
+<!--底部版权-->
+<div class="foot">
+    <div class="left">
+        <p>联系电话 : {hs:debris title="phone" /}</p>
+        <p>地址 : {hs:debris title="address" /}</p>
+        <p>服务项目 : {hs:navsub pid="2" limit="5" order="id asc"}<a href="{$navsub.url}">{$navsub.name} </a> &nbsp;&nbsp;{/hs:navsub}</p>
+        <p>Copyright © 2019 唯爱动物医馆 版权所有</p>
+        <p>{hs:debris title="ba" /}</p>
+    </div>
+    <img src="{hs:debris title='ewm' /}" alt="">
+    <div style="clear: both"></div>
+</div>
+
+<!--底部栏目-->
+<div class="f-nav">
+    <a href="/">
+        <div class="img"><img src="__INDEX__/images/f1.png" alt=""></div>
+        <div class="tit">首页</div>
+    </a>
+    {hs:navcon id="6"}
+    <a href="{$navcon.url}">
+        <div class="img"><img src="__INDEX__/images/f2.png" alt=""></div>
+        <div class="tit">服务项目</div>
+    </a>
+    {/hs:navcon}
+    {hs:navcon id="4"}
+    <a href="{$navcon.url}">
+        <div class="img"><img src="__INDEX__/images/f3.png" style="height: 40px" alt=""></div>
+        <div class="tit">康复故事</div>
+    </a>
+    {/hs:navcon}
+    <a href="tel:{hs:debris title='phone' /}">
+        <div class="img"><img src="__INDEX__/images/f4.png" alt=""></div>
+        <div class="tit">一键拨号</div>
+    </a>
+    <div style="clear: both"></div>
+</div>
+
+<script type="text/javascript" src="__INDEX__/wap/js/index.js"></script>
+</body>
+</html>

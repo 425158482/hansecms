@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">友情链接</blockquote>
+        <div class="btn_tj">
+            <a href="{:url('links/add')}" class="layui-btn layui-btn-sm"><i class="layui-icon"></i>添加链接</a>
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="200">
+                    <col>
+                    <col width="200">
+                    <col width="100">
+                    <col width="130">
+
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>友链名称</th>
+                    <th>友链地址</th>
+                    <th>类型</th>
+                    <th>排序(desc)</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="links" id="links"}
+                <tr>
+                    <td>{$links.id}</td>
+                    <td>{$links.title}</td>
+                    <td>{$links.url}</td>
+                    <td>
+                        {if($links.type==1)}
+                        文字类型
+                        {elseif($links.type==2)}
+                        图片类型
+                        {/if}
+                    </td>
+                    <td><input type="text" class="sort" data-id="{$links.id}" value="{$links.sort}"></td>
+                    <td>
+                        <a href="{:url('links/edit',['id'=>$links.id])}" type="button" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm delete" data-id="{$links.id}"><i class="layui-icon"></i></button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        $(document).on('blur','.sort', function () {
+            var id = $(this).attr('data-id');
+            var obs = $(this);
+            $.ajax({
+                type: "POST",
+                url: '{:url("links/editsort")}',
+                data:{'id':id,'sort':obs.val()},
+                success: function(msg){
+                    if(msg){
+                        layer.msg('排序已更改', {icon: 1});
+                    }else{
+                        layer.msg('排序更改失败', {icon: 5});
+                    }
+                }
+            });
+        });
+        $(document).on('click','.delete', function () {
+            var id = $(this).attr('data-id');
+            layer.confirm('确定要删除吗？', {
+                btn: ['必须的','忍一手'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("links/delete")}',
+                    data:{'id':id},
+                    success: function(msg){
+                        if(msg==1){
+                            layer.msg('删除成功', {icon: 1,time:1000}, function() {
+                                location.href="{:url('links/index')}";
+                            });
+                            location.href;
+                        }else if(msg==0){
+                            layer.msg('系统繁忙', {icon: 5});
+                        }else{
+                            layer.msg('系统繁忙', {icon: 5});
+                        }
+                    }
+                });
+            });
+        })
+        $(".bannerpic").click(function () {
+            var img = $(this).data("pic");
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: '516px',
+                skin: '', //没有背景色
+                shadeClose: true,
+                content: "<img src='"+ img +"' style='width: 516px;'>"
+            });
+        })
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

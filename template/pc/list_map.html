@@ -1,0 +1,106 @@
+{extend name="index/base2" /}
+
+{block name="main"}
+<style>
+    .map_content{
+        width: 1150px;
+        margin: auto;
+        margin-bottom: 60px;
+        border: 10px solid #f4f4f4;
+        padding: 15px;
+    }
+
+
+</style>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=PgSOCFo2Z1s9vxT8Cd7eN0hMxKUouuao"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+<div style="text-align: center;font-size: 30px;color: #444;padding: 30px;">
+    联系我们
+</div>
+<div class="hs_lx_ly">
+    <div class="left">
+        {hs:navcon id="$navid"}
+        {$navcon.content}
+        {/hs:navcon}
+    </div>
+    <div class="right">
+        <div style="text-align: center;font-size: 25px;padding: 30px 0">在线留言</div>
+        <form action="/form/1" method="post">
+            <input type="hidden" name="__token__" value="{$Request.token}" />
+            <div class="lx_ly_d">
+                <input type="text" name="name" value="" placeholder="姓名...">
+                <input type="number" name="phone" value="" placeholder="电话...">
+                <div style="clear: both"></div>
+            </div>
+            <div class="lx_ly_d">
+                <textarea name="content" placeholder="留言内容..."></textarea>
+            </div>
+            <div class="lx_ly_d">
+                <input type="text" name="captcha" placeholder="验证码..."><img src="{:captcha_src()}" onclick="this.src=this.src" alt="">
+                <div style="clear: both"></div>
+            </div>
+            <div class="lx_ly_d">
+                <input type="submit" style="width: 100%;border: 0;height: 35px" value="立即提交">
+            </div>
+
+        </form>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<div style="text-align: center;font-size: 30px;color: #444;padding: 30px;">
+    地图导航
+</div>
+<div class="map_content">
+    <div class="left">
+        <div id="allmap" style="height: 400px">
+        </div>
+        <script type="text/javascript">
+            // 百度地图API功能
+            var map = new BMap.Map('allmap');
+            var poi = new BMap.Point({hs:debris title='jwd' /});
+            map.centerAndZoom(poi, 16);
+
+
+            var content = '<div style="margin:0;line-height:20px;padding:2px;">' +
+                '<img src="../img/baidu.jpg" alt="" style="float:right;zoom:1;overflow:hidden;width:100px;height:100px;margin-left:3px;"/>' +
+                '地址：{hs:debris title='address' /}<br/>电话：{hs:debris title='phone' /}' +
+            '</div>';
+
+            //创建检索信息窗口对象
+            var searchInfoWindow = null;
+            searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
+                title  : "{hs:config name='site_name'/}",      //标题
+                width  : 200,             //宽度
+                height : 85,              //高度
+                panel  : "panel",         //检索结果面板
+                enableAutoPan : true,     //自动平移
+                searchTypes   :[
+                    BMAPLIB_TAB_SEARCH,   //周边检索
+                    BMAPLIB_TAB_TO_HERE,  //到这里去
+                    BMAPLIB_TAB_FROM_HERE //从这里出发
+                ]
+            });
+            var marker = new BMap.Marker(poi); //创建marker对象
+            marker.enableDragging(); //marker可拖拽
+
+            searchInfoWindow.open(marker);
+
+            map.addOverlay(marker); //在地图中添加marker
+            baiduMap.showInfoWindow(window);
+        </script>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+{/block}

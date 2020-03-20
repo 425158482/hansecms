@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>{if(isset($content.title))}{$content.title}{else}{hs:navcon id="$navid"}{$navcon.name}{/hs:navcon}{/if} - {hs:seo name='seo_title'/}</title>
+    <meta name="keywords" content="{hs:seo name='seo_keywords'/}">
+    <meta name="description" content="{hs:seo name='seo_description'/}">
+    <link rel="stylesheet" type="text/css" href="__INDEX__/css/swiper.css" />
+    <link rel="stylesheet" type="text/css" href="__INDEX__/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__INDEX__/common/animate.css" />
+    <link rel="stylesheet" type="text/css" href="__INDEX__/common/common.css" />
+    <script src="__INDEX__/common/jquery-1.11.1.min.js"></script>
+    <script src="__INDEX__/js/swiper.js"></script>
+    <style>
+        .base2_content>.n_picture>.left:hover{
+            border-bottom: 1px solid red;
+            box-shadow: 0 5px 12px rgba(255, 0, 0, .5);
+        }
+        .base2_content>.n_picture>.left:hover>a>div:nth-child(1){
+            border: 1px solid red;
+        }
+        .base2_content>.n_picture>.left:hover>a>div:nth-child(1) img{
+            transform: scale(1.4);
+        }
+        .xingwen_li>.swiper-slide:hover{
+            border: 1px solid red;
+            box-shadow: 0 5px 12px rgba(255, 0, 0, .5);
+        }
+        .base2 .hs_nav_2>a:hover{
+            border: 1px solid red;
+            background: red;
+            color: #fff;
+        }
+        .base2 .hs_nav_2>a.suba{
+            border: 1px solid red;
+            background: red;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<!--头部-->
+{include file="index/public_header"}
+<!--banner-->
+<hr>
+
+<!--当前位置-->
+<div class="dqbg">
+    <div class="dqwz" style="border-bottom: 1px solid #000">
+        <div>
+            <div class="left">当前位置 : {hs:current name=" >> " /}</div>
+            <div class="right" onclick="javascript :history.back(-1);">返回</div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+    <!--lanmu-->
+    <div class="base2">
+        <div>
+            <span>{hs:navcon id="$topnav"}{$navcon.name}{/hs:navcon}</span>
+            {hs:navsub pid="$topnav" limit="100" order="id asc"}
+            <div class="hs_nav_2">
+                <a href="{$navsub.url}" class="{if($navid==$navsub.id)}suba{/if}">{$navsub.name}</a>
+            </div>
+            {/hs:navsub}
+        </div>
+    </div>
+</div>
+<!--内容快-->
+<div class="base2_content">
+    {block name="main"}
+
+    {/block}
+</div>
+
+
+<!--底部-->
+{include file="index/public_footer"}
+
+<script src="__INDEX__/js/index.js"></script>
+<script src="__INDEX__/common/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{extend name="pc/base" /}
+
+{block name="main"}
+<div class="n_news">
+    {hs:list nid="$navid" order="create_Time desc" limit="" reco="0" pagesize="10"}
+    <div class="hs_list_news">
+        <div class="left"><a href="{$list.url}"><img src="{$list.pic}" alt="{$list.title}"></a></div>
+        <div class="right">
+            <div><a href="{$list.url}">{$list.title}</a></div>
+            <div>{$list.content.desc}</div>
+            <div>{$list.create_Time|date="Y-m-d",###}</div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    {/hs:list}
+</div>
+<div  id="articeBottom">
+    {$pages}
+</div>
+{/block}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="container">
+        <blockquote class="layui-elem-quote">上传限制</blockquote>
+        <form class="layui-form menu_form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片格式</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="file_img" value="{:config('site.file_img')}" lay-verify="title" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">按 | 分割多个</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片大小</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="file_img_size" lay-verify="" value="{:config('site.file_img_size')}" autocomplete="off" placeholder="/模块/控制器/方法" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">(KB)</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">文件格式</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="file_form" autocomplete="off" value="{:config('site.file_form')}" placeholder="layui-icon-star-fill" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">按 | 分割多个</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">文件大小</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="file_size" lay-verify="sort" autocomplete="off" value="{:config('site.file_size')}" placeholder="序号默认0" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">(KB)</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-input-inline"></label>
+                <div class="layui-input-block">
+                    <button  lay-submit lay-filter="menu" type="submit" class="layui-btn layui-btn-normal layui-btn-sm">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form', 'layedit'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , jquery = layui.jquery
+            , layedit = layui.layedit;
+        //自定义验证规则
+        form.on('submit(menu)', function(data){
+            var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+            jquery.ajax({
+                type:"post",
+                url :"{:url('system/upfiless')}",
+                data:data,
+                success:function (msg) {
+                    if(msg==1){
+                        layer.msg('更新成功!', {icon: 1});
+                    }else{
+                        layer.msg('系统繁忙!', {icon: 5});
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+
+        });
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

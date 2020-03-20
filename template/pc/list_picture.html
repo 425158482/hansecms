@@ -1,0 +1,20 @@
+{extend name="index/base2" /}
+
+{block name="main"}
+<div class="n_picture">
+    {hs:list nid="$navid" order="create_Time desc" limit="" reco="0" pagesize="12"}
+    <div class="left">
+        <a href="{$list.url}">
+            <div><div><img src="{$list.pic}" alt="{$list.title}"></div></div>
+            <div>{$list.title}</div>
+            <div>{$list.content.desc}</div>
+        </a>
+    </div>
+    {/hs:list}
+    <div style="clear: both"></div>
+</div>
+
+<div  id="articeBottom">
+    {$pages}
+</div>
+{/block}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {include file="public/head" /}
+</head>
+<body>
+<!--头部栏目-->
+{include file="public/menu" /}
+<!--中间内容-->
+<div class="admin_main">
+    <div class="content_box">
+        <div class="admin_left_nav">
+            {volist name="indexnav" id="indexnav"}
+            {if($indexnav.model==4)}
+            <a href="{:url('nav/edit',['id'=>$indexnav.id])}" class="nav" style="color: red">{$indexnav.name}</a>
+            {else}
+            <a href="{:url('content/content',['id'=>$indexnav.id])}" class="nav {if ($indexnav.id==$curnav)}navcur{/if}">{$indexnav.name}</a>
+            {/if}
+            {/volist}
+        </div>
+        <div class="admin_content">
+            <div class="container">
+                <blockquote class="layui-elem-quote" style="margin-bottom: 0">{$cnav.name}</blockquote>
+                <table class="layui-hide" id="test" lay-filter="test"></table>
+                <script type="text/html" id="switchTpl">
+                    <!-- 这里的 checked 的状态只是演示 -->
+                    <input type="checkbox" name="reco" value="{{d.reco}}" data-id="{{d.id}}" lay-skin="switch" lay-text="ON|OFF" lay-filter="reco" {{ d.reco == 1 ? 'checked' : '' }}>
+                </script>
+                <script type="text/html" id="toolbarDemo" style="position: relative">
+                    <div class="layui-btn-container">
+                        <a href="{:url('content/addcontent',['id'=>$curnav])}" class="layui-btn layui-btn-sm"><i class="layui-icon"></i>添加</a>
+                        <button class="layui-btn layui-btn-sm" lay-event="getCheckData" style="float: right">删除选中行</button>
+                        <button class="layui-btn layui-btn-sm" lay-event="yidong">移动选中行</button>
+                    </div>
+                    <form class="layui-form" style="position: absolute;top: 6px;left: 180px">
+                        <div class="layui-form-item" style="margin-bottom: 0">
+                            <div class="layui-input-inline">
+                                <select name="nav" id="nav">
+                                    <option value="0" selected="">选择移动栏目</option>
+                                    {volist name="yidong" id="yidong"}
+                                    {if($yidong.model!=$cnav.model)}
+                                    <option value="{$yidong.id}" disabled="">{$yidong.name}</option>
+                                    {else}
+                                    <option value="{$yidong.id}">{$yidong.name}</option>
+                                    {/if}
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </script>
+
+                <script type="text/html" id="barDemo">
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" lay-event="edit"><i class="layui-icon"></i></button>
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" lay-event="del"><i class="layui-icon"></i></button>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    layui.use(['table','jquery','form'], function(){
+        var table = layui.table
+            ,jquery = layui.jquery
+            ,form = layui.form;
+        table.render({
+            elem: '#test'
+            ,url:'{:url("content/getcontent",["id"=>$curnav])}'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'exports', 'print']
+            ,title: '用户数据表'
+            ,cols: [[
+                {type: 'checkbox', }
+                ,{field:'id', title:'ID', width:80,  unresize: true, sort: true}
+                ,{field:'title', title:'标题'}
+                ,{field:'navname', title:'所属栏目', width:120,}
+                ,{field:'reco', title:'推荐', width:100,templet: '#switchTpl', unresize: true}
+                ,{field:'sort', title:'排序', width:60, edit: 'text' }
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:130}
+            ]]
+            ,limit:12
+            ,limits:[
+                15,20,25,30,35
+            ]
+
+            ,page: true
+        });
+        //监听单元格编辑
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            jquery.ajax({
+                type:"post",
+                url :"{:url('content/table_up')}",
+                data:{"id":data.id,"field":field,"value":value},
+                success:function (msg) {
+                    if(msg==1) {
+                        layer.msg('更新成功!', {icon: 1});
+                    }else{
+                        layer.msg('更新失败!', {icon: 5});
+                    }
+                }
+            })
+        });
+        //监听状态操作
+        form.on('switch(reco)', function(obj){
+            var id = $(this).attr('data-id');
+            var field = this.name;
+            var value = obj.elem.checked ? "1" :"0";
+            jquery.ajax({
+                type: "post",
+                url: "{:url('content/table_up')}",
+                data: {"id": id, "field": field, "value": value},
+                success: function (msg) {
+                    if (msg == 1) {
+                        layer.msg('更新成功!', {icon: 1});
+                    } else {
+                        layer.msg('更新失败!', {icon: 5});
+                    }
+                }
+            })
+        });
+        //头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.confirm('真的删除这'+ data.length +'行数据吗？', function () {
+                        jquery.ajax({
+                            type: "post",
+                            url: "{:url('content/deleteall')}",
+                            data: {data: JSON.stringify(data)},
+                            success: function (msg) {
+                                if (msg == 1) {
+                                    location.reload();
+                                } else {
+                                    layer.msg('系统繁忙!', {icon: 5});
+                                }
+                            }
+                        })
+                    })
+                    break;
+                case 'yidong':
+                    var data = checkStatus.data;
+                    var nav = $("#nav").val();
+                    if(nav==0 || nav==""){
+                        layer.msg('请先选择目标栏目!', {icon: 5});
+                    }else{
+
+                        jquery.ajax({
+                            type: "post",
+                            url: "{:url('content/getn')}",
+                            data: {id:nav},
+                            success: function (msg) {
+                                if(msg==0){
+                                   return layer.msg('选择栏目不存在!', {icon: 5});
+                                }
+                                layer.confirm("确定将所选数据移动到<<<span style='color:red'>"+msg+"</span>>>", function () {
+                                    jquery.ajax({
+                                        type: "post",
+                                        url: "{:url('content/moves')}",
+                                        data: {data: JSON.stringify(data),navid:nav},
+                                        success: function (msg) {
+                                            console.log(msg)
+                                            if (msg == 1) {
+                                                layer.msg('所选数据移动成功!', {
+                                                    icon: 1, //样式类名
+                                                    time: 1500,
+                                                }, function() {
+                                                    location.reload();
+                                                })
+                                            } else {
+                                                layer.msg('系统繁忙!', {icon: 5});
+                                            }
+                                        }
+                                    })
+                                })
+                            }
+                        })
+
+                    }
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    jquery.ajax({
+                        type: "post",
+                        url: "{:url('content/delete')}",
+                        data: {"id": data.id},
+                        success: function (msg) {
+                            console.log(msg)
+                            if (msg == 1) {
+                                obj.del();
+                                layer.close(index);
+                            }else{
+                                layer.msg('系统繁忙!', {icon: 5});
+                            }
+                        }
+                    })
+
+                });
+            } else if(obj.event === 'edit'){
+                location.href="/admini/content/edit/id/"+data.id+".html";
+            }
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>
