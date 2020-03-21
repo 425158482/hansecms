@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:68:"/Users/zhanghan/www/hansecms/application/admini/view/menu/index.html";i:1569161400;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/head.html";i:1575261364;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/menu.html";i:1584714334;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:68:"/Users/zhanghan/www/hansecms/application/admini/view/menu/index.html";i:1569161400;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/head.html";i:1575261364;s:69:"/Users/zhanghan/www/hansecms/application/admini/view/public/menu.html";i:1584762368;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +72,27 @@
             , layer = layui.layer
             , jquery = layui.jquery
             ,colorpicker = layui.colorpicker;
-        <?php if((\think\Session::get('qxbz'))): ?>
+        <?php if((isset($notice))): ?>
+        layer.open({
+            type: 1
+            ,title: false //不显示标题栏
+            ,closeBtn: false
+            ,area: '300px;'
+            ,shade: 0.8
+            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,btn: ['前往官网', '关闭']
+            ,btnAlign: 'c'
+            ,moveType: 1 //拖拽模式，0或者1
+            ,content: '<h2 style="text-align: center;background: red;color: #fff;padding: 5px 0">官方公告</h2><div style="padding: 10px 20px"><?php echo $notice; ?></div> '
+            ,success: function(layero){
+                var btn = layero.find('.layui-layer-btn');
+                btn.find('.layui-layer-btn0').attr({
+                    href: 'http://www.hs-cms.cn/'
+                    ,target: '_blank'
+                });
+            }
+        });
+        <?php endif; if((\think\Session::get('qxbz'))): ?>
         layer.msg('<?php echo \think\Session::get('qxbz'); ?>', {icon: 5,time: 2000});
         <?php endif; ?>
         colorpicker.render({

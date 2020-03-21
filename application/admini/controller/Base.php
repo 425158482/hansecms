@@ -9,6 +9,7 @@
 namespace app\admini\controller;
 
 use think\Controller;
+use think\Cookie;
 use think\Db;
 use think\Session;
 
@@ -18,6 +19,19 @@ class Base extends Controller
     protected function _initialize()
     {
         if(Session::has("admini")){
+            if(!Cookie::has('notice')){//通知消息
+                $url = "http://www.hs-cms.cn/api/api/notice";
+                $output = getCurl($url);
+                $this->assign("notice",$output->data);
+                Cookie::set("notice",$output->data,2592000);
+            }else{
+                $url = "http://www.hs-cms.cn/api/api/notice";
+                $output = getCurl($url);
+                if(Cookie::get('notice')!=$output->data){
+                    Cookie::set("notice",$output->data,2592000);
+                    $this->assign("notice",$output->data);
+                }
+            }
             //获得登陆用户操作权限
             if(Session::get("admini")["type"]!=1) {
                 $url = strtolower("/" . request()->module() . "/" . request()->controller() . "/" . request()->action());

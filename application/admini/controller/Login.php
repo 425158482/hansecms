@@ -9,6 +9,7 @@
 namespace app\admini\controller;
 
 use think\Controller;
+use think\Cookie;
 use think\Db;
 use think\Session;
 use think\Config;
